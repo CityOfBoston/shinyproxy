@@ -51,7 +51,7 @@ module "shinyproxy" {
   environment = "${var.environment}"
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
-  shiny_proxy_config_file = "${path.root}/shinyproxy_application.yml"
+  shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
   aws_region = "${var.aws_region}"
   key_name = "${var.ssh_key_name}"
 
@@ -62,6 +62,9 @@ module "shinyproxy" {
 
 
 
+variable "shiny_proxy_config_file" {
+  description = "yaml configuration file for shinyproxy"
+}
 
 variable "aws_region" {
   description = "AWS region to launch servers."
