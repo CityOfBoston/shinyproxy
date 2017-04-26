@@ -54,7 +54,7 @@ module "ubuntu_ami" {
 
 
 module "shinyproxy" {
-  source = "../../../boston_analytics_tf_modules/shiny_proxy/"
+  source = "shiny_proxy/"
   vpc_id = "${module.aws_vpc.vpc_id}"
   private_subnets = "${module.aws_vpc.private_subnets}"
   public_subnets = "${module.aws_vpc.public_subnets}"
