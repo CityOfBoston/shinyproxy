@@ -1,0 +1,18 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - apt-get -y update && apt-get -y upgrade
+      - apt-get -y install ssh
+      - apt-get -y install jq
+      - chmod u+x infrastructure/codebuild/*
+      - infrastructure/codebuild/install_terraform.sh
+      - infrastructure/codebuild/setup_github_access.sh
+
+  build:
+    commands:
+        - chmod u+x bin/*
+        - infrastructure/codebuild/setup_terraform_aws_credentials.sh
+        - infrastructure/codebuild/deploy_infra.sh
+
+
