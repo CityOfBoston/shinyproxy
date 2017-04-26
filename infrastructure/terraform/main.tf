@@ -51,7 +51,7 @@ module "shinyproxy" {
   environment = "${var.environment}"
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
-  shiny_proxy_config_file = "shinyproxy_application.yaml"
+  shiny_proxy_config_file = "${path.root}/shinyproxy_application.yml"
   aws_region = "${var.aws_region}"
   key_name = "${var.ssh_key_name}"
 

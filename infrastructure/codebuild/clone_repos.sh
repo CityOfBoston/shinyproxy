@@ -2,7 +2,7 @@
 export ROOT=$PWD
 mkdir shinyapps
 cd shinyapps
-source /tmp/shiny_proxy_ip
+source /tmp/shiny_proxy_ip && \
 while read repo; do
     git clone $repo &&  \
     scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $repo ubuntu@$SHINY_PROXY_IP && \
