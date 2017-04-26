@@ -48,12 +48,12 @@ module "shinyproxy" {
   private_subnets = "${module.aws_vpc.private_subnets}"
   public_subnets = "${module.aws_vpc.public_subnets}"
   instance_type = "m4.large"
-  environment = "development"
+  environment = "${var.environment}"
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
   shiny_proxy_config_file = "shinyproxy_application.yaml"
   aws_region = "${var.aws_region}"
-  key_name = "anaconda-enterprise.prod"
+  key_name = "${var.ssh_key_name}"
 
 
 }
@@ -78,6 +78,9 @@ variable "ssh_key" {
   #default = "/Users/luissano/.ssh/anaconda-enterpriseprod.pem"
 }
 
+variable "ssh_key_name" {
+  description = "the name of the private key"
+}
 variable "environment" {
   #default = "development"
 }
