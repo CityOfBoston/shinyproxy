@@ -8,7 +8,7 @@ phases:
       - chmod u+x infrastructure/codebuild/*
       - infrastructure/codebuild/install_terraform.sh
       - infrastructure/codebuild/setup_github_access.sh
-      - infrastructure/codebuild/get_ssh_key.sh
+      #- infrastructure/codebuild/get_ssh_key.sh
 
   build:
     commands:
