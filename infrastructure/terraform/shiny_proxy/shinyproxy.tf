@@ -25,7 +25,6 @@ resource "aws_instance" "shinyproxy" {
       user = "ubuntu"
       type = "ssh"
       host = "${self.public_ip}"
-      agent = "true"
       timeout = "5m"
       private_key = "${file(var.ssh_key)}"
     }
@@ -42,7 +41,6 @@ resource "aws_instance" "shinyproxy" {
       user = "ubuntu"
       type = "ssh"
       host = "${self.public_ip}"
-      agent = "true"
       timeout = "5m"
       private_key = "${file(var.ssh_key)}"
     }
@@ -54,7 +52,6 @@ resource "aws_instance" "shinyproxy" {
       user = "ubuntu"
       type = "ssh"
       host = "${self.public_ip}"
-      agent = "true"
       timeout = "5m"
       private_key = "${file(var.ssh_key)}"
     }
