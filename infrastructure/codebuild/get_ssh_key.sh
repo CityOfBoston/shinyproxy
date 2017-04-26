@@ -7,3 +7,5 @@ export DEPLOY_KEYS_REGION=us-west-2
 export SHINYPROXYKEY=shinyproxy.pem
 echo "Downloading ssh keys from s3://${DEPLOY_KEYS_BUCKET} to ~/.ssh"
 aws s3 sync s3://${DEPLOY_KEYS_BUCKET}/${SHINYPROXYKEY} ~/.ssh/ --region ${DEPLOY_KEYS_REGION}
+eval "$(ssh-agent -s)"
+ssh-add -K ~/.ssh/${SHINYPROXYKEY}
