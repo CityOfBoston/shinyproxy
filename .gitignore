@@ -7,4 +7,4 @@
 # Module directory
 .terraform/
 
-.idea/*
+.idea/
