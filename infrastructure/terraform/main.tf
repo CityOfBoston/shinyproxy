@@ -89,4 +89,6 @@ variable "environment" {
 }
 
 
-
+output "shiny_proxy_ip" {
+  value = "${module.shinyproxy.shiny_proxy_public_ip}"
+}

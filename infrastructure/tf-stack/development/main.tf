@@ -37,3 +37,7 @@ terraform {
     encrypt = "true"
   }
 }
+
+output "shiny_proxy_ip" {
+  value = "${module.shiny_proxy_stack.shiny_proxy_ip}"
+}

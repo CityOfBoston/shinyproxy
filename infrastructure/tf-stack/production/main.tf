@@ -13,6 +13,11 @@ variable "ssh_key_name" {
 }
 
 
+variable "shiny_proxy_config_file" {
+
+}
+
+
 module "shiny_proxy_stack" {
   source = "../../terraform"
   aws_region = "${var.aws_region}"
@@ -20,7 +25,7 @@ module "shiny_proxy_stack" {
   environment = "production"
   ssh_key = "${var.ssh_key}"
   ssh_key_name = "${var.ssh_key_name}"
-
+  shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
 }
 
 provider "aws" {
@@ -36,4 +41,9 @@ terraform {
     encrypt = "true"
   }
 }
+
+output "shiny_proxy_ip" {
+  value = "${module.shiny_proxy_stack.shiny_proxy_ip}"
+}
+
 
