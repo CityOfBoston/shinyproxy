@@ -9,6 +9,7 @@ aws s3 sync s3://${DEPLOY_KEYS_BUCKET} ~/.ssh/ --region ${DEPLOY_KEYS_REGION}
 
 mv ~/.ssh/deploy_key ~/.ssh/id_rsa
 chmod 700 ~/.ssh/id_rsa
+chmod 700 ~/.ssh/shinyproxy.pem
 
 echo "Adding www.github.com to known hosts"
 ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
