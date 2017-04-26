@@ -15,3 +15,7 @@ ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 ssh-keygen -f ~/.ssh/known_hosts -R [www.github.com]
 
 echo "Done setting up ssh github access"
+
+echo "Attempting to set up ssh keys"
+eval "$(ssh-agent -s)"
+ssh-add -K ~/.ssh/shinyproxy.pem
