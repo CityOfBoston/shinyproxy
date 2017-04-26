@@ -12,7 +12,7 @@ variable "ssh_key_name" {
 
 module "shiny_proxy_stack" {
   source = "../../terraform"
-  azs = ["us-west-2b"]
+  azs = "us-west-2b"
   environment = "development"
   ssh_key = "${var.ssh_key}"
   ssh_key_name = "${var.ssh_key_name}"
