@@ -117,31 +117,31 @@ resource "aws_security_group" "shinyproxy" {
 
 }
 
-# Create an IAM role for the Web Servers.
-resource "aws_iam_role" "shiny_role" {
-    name = "shinyproxy"
-    assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": { "Service": "ec2.amazonaws.com" },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_instance_profile" "shinyproxy_profile" {
-  name = "shinyproxy"
-  role = "${aws_iam_role.shiny_role.id}"
-   provisioner "local-exec" {
-        command = "sleep 60" # wait for instance profile to appear :(
-    }
-}
-
+//# Create an IAM role for the Web Servers.
+//resource "aws_iam_role" "shiny_role" {
+//    name = "shinyproxy"
+//    assume_role_policy = <<EOF
+//{
+//  "Version": "2012-10-17",
+//  "Statement": [
+//    {
+//      "Effect": "Allow",
+//      "Principal": { "Service": "ec2.amazonaws.com" },
+//      "Action": "sts:AssumeRole"
+//    }
+//  ]
+//}
+//EOF
+//}
+//
+//resource "aws_iam_instance_profile" "shinyproxy_profile" {
+//  name = "shinyproxy"
+//  role = "${aws_iam_role.shiny_role.id}"
+//   provisioner "local-exec" {
+//        command = "sleep 60" # wait for instance profile to appear :(
+//    }
+//}
+//
 
 output "shiny_proxy_public_ip" {
   value = "${aws_instance.shinyproxy.public_ip}"
