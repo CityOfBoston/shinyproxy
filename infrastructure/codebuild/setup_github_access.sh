@@ -18,4 +18,4 @@ echo "Done setting up ssh github access"
 
 echo "Attempting to set up ssh keys"
 eval "$(ssh-agent -s)"
-ssh-add -K ~/.ssh/shinyproxy.pem
+ssh-add ~/.ssh/id_rsa
