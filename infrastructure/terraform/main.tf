@@ -7,7 +7,6 @@ provider "aws" {
 
 
 module "aws_vpc" {
-  #source = "../../../boston_analytics_tf_modules/vpc"
   source = "git@github.com:CityOfBoston/boston_analytics_tf_modules.git//vpc?ref=v0.0.4.2"
   name = "shiny-proxy-vpc"
 

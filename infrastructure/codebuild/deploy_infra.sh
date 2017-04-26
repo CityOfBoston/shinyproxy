@@ -8,7 +8,7 @@ source /tmp/aws_cred_export.txt  && cd infrastructure/tf-stack/${DeploymentEnvir
 terraform init && terraform get && \
 terraform apply \
     -var "ssh_key=${SSH_KEY_LOCATION}" \
-    -var "ssh_key_name${SSH_KEYNAME}"
+    -var "ssh_key_name=${SSH_KEYNAME}"
 
 
 echo "Successfully deployed application. I probably should start testing it"
