@@ -16,5 +16,7 @@ phases:
         - infrastructure/codebuild/setup_terraform_aws_credentials.sh
         - infrastructure/codebuild/deploy_infra.sh
         - infrastructure/codebuild/clone_repos.sh
+        - infrastructure/codebuild/start_shinyproxy.sh
+        
 
 
