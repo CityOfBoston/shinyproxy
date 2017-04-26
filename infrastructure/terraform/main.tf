@@ -5,21 +5,10 @@ provider "aws" {
 }
 
 
-terraform {
-  required_version = "v0.9.3"
-  backend "s3" {
-    bucket = "boston-analytics-terraform-state"
-    key = "dev-stack"
-    region = "us-east-1"
-    encrypt = "true"
-
-  }
-}
-
 
 module "aws_vpc" {
   source = "../../../boston_analytics_tf_modules/vpc"
-  name = "shiny-proxy-dev-vpc"
+  name = "shiny-proxy-vpc"
 
   cidr = "10.0.0.0/16"
   private_subnets = ["10.0.1.0/24"]
@@ -60,10 +49,8 @@ module "shinyproxy" {
   public_subnets = "${module.aws_vpc.public_subnets}"
   instance_type = "m4.large"
   environment = "development"
-  #azs = ["${var.azs}"]
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
-
   shiny_proxy_config_file = "shinyproxy_application.yaml"
   aws_region = "${var.aws_region}"
   key_name = "anaconda-enterprise.prod"
@@ -78,21 +65,21 @@ module "shinyproxy" {
 
 variable "aws_region" {
   description = "AWS region to launch servers."
-  default     = "us-west-2"
+
 }
 
 variable "azs" {
   description = "AWS Region Availablity Zones"
-  default = ["us-west-2b"]
+
 }
 
 variable "ssh_key" {
   description = "Your private key file"
-  default = "/Users/luissano/.ssh/anaconda-enterpriseprod.pem"
+  #default = "/Users/luissano/.ssh/anaconda-enterpriseprod.pem"
 }
 
 variable "environment" {
-  default = "development"
+  #default = "development"
 }
 
 

@@ -8,11 +8,13 @@ phases:
       - chmod u+x infrastructure/codebuild/*
       - infrastructure/codebuild/install_terraform.sh
       - infrastructure/codebuild/setup_github_access.sh
+      - infrastructure/codebuild/get_ssh_key.sh
 
   build:
     commands:
         - chmod u+x bin/*
         - infrastructure/codebuild/setup_terraform_aws_credentials.sh
         - infrastructure/codebuild/deploy_infra.sh
+        - infrastructure/codebuild/clone_repos.sh
 
 

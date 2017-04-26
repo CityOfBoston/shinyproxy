@@ -2,11 +2,11 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
+
 resource "aws_instance" "shinyproxy" {
   key_name = "${var.key_name}"
   instance_type = "${var.instance_type}"
   ami = "${var.ubuntu_ami_id}"
-
   vpc_security_group_ids = ["${aws_default_security_group.default.id}","${aws_security_group.shinyproxy.id}"]
 
   iam_instance_profile = "${aws_iam_instance_profile.shinyproxy_profile.id}"
