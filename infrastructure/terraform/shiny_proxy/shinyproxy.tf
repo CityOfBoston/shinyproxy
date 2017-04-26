@@ -44,7 +44,7 @@ resource "aws_instance" "shinyproxy" {
     }
   }
   provisioner "file" {
-    source = "${path.root}/${var.shiny_proxy_config_file}"
+    source = "${var.shiny_proxy_config_file}"
     destination = "~/shinyproxy/application.yml"
     connection {
       user = "ubuntu"
