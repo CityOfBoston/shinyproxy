@@ -10,9 +10,6 @@ source /tmp/shiny_proxy_ip
 
 ssh -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ubuntu@$SHINY_PROXY_IP << EOF
 echo "going to kill any shinyproxy processes before starting up a new one"
-(jps -ml | grep shinyproxy | grep -P -o "\d+\s" | awk '{print $1}' | xargs kill) && \
- echo "starting up a new shinyproxy process"
- cd ~/shinyproxy/ &&  nohup java -jar shinyproxy-0.8.7.jar & || \
- echo "no existing shiny process so just starting it up"
- cd ~/shinyproxy/ && nohup java -jar shinyproxy-0.8.7.jar &
+((jps -ml | grep shinyproxy | grep -P -o "\d+\s" | awk '{print $1}' | xargs kill) && \
+ cd ~/shinyproxy/ &&  nohup java -jar shinyproxy-0.8.7.jar &) || (cd ~/shinyproxy/ && nohup java -jar shinyproxy-0.8.7.jar &)
 EOF
