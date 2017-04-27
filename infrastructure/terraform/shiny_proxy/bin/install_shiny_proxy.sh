@@ -2,10 +2,11 @@
 
 # Ugh weird grub based errors started showing up on 4/24/17
 #https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
+#sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 
+DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
-sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get update -y
 sudo apt-get install -y awscli
 
 
