@@ -19,7 +19,7 @@ while read repo; do
         git checkout docker && docker build -t ${IMAGE_TAG} .
 EOF
 done < $ROOT/repositories.conf
-
+echo "done installing docker images for repos"
 
 
 
