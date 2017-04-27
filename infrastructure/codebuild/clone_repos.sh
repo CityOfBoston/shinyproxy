@@ -27,7 +27,8 @@ git clone $REPO_NAME
 scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $NAME ubuntu@$SHINY_PROXY_IP:~/shinyproxy/
 ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
         cd ~/shinyproxy/$NAME
-        git checkout docker && docker build -t ${NAME} .
+        sudo git checkout docker
+        sudo docker build -t ${NAME} .
 EOF
 echo "done installing docker images for repos"
 
