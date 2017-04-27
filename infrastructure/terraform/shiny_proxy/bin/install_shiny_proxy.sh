@@ -5,7 +5,7 @@
 sudo apt-get update
 sudo rm /boot/grub/menu.lst
 sudo update-grub-legacy-ec2 -y
-sudo apt-get dist-upgrade -qq --force-yes
+sudo apt-get dist-upgrade -qq --allow
 sudo reboot
 
 sudo apt-get update -y && sudo apt-get upgrade -y
