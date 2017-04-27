@@ -40,7 +40,7 @@ shiny:
     description: Boston Fire Department Dashboard
     docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
     docker-image: bostonanalytics/bfd_response_times
-    groups: firedashboard
+    groups: scientists
 
 logging:
   file:
