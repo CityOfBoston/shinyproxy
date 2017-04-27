@@ -4,14 +4,16 @@ variable "aws_region" {
 
 variable "ssh_key" {
   description = "location of ssh key for instance"
+  default = "~/.ssh/shinyproxy.pem"
 }
 
 variable "ssh_key_name" {
   description = "Name of the AWS Keypair"
+  default = "shinyproxy"
 }
 
 variable "shiny_proxy_config_file" {
-
+  default ="../../../application.yml"
 }
 
 module "shiny_proxy_stack" {
