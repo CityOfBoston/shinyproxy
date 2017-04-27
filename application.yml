@@ -35,10 +35,10 @@ shiny:
     docker-cmd: ["R", "-e shinyproxy::run_06_tabsets()"]
     docker-image: openanalytics/shinyproxy-demo
     groups: scientists
-  - name: bfd_dashboard
+  - name: bfd_response_times
     display-name: Boston Fire Department Dashboard
     docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
-    docker-image: bostonanalytics/bfd-dashboard
+    docker-image: bostonanalytics/bfd_response_times
     groups: firedashboard
 
 logging:

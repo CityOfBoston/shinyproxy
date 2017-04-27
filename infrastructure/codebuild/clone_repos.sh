@@ -33,7 +33,7 @@ scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $NAME ubuntu@$SHINY_
 ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
         cd ~/shinyproxy/$NAME
         git checkout docker
-        sudo docker build -t ${NAME} .
+        sudo docker build -t bostonanalytics/${NAME} .
 EOF
 echo "done installing docker images for repos"
 
