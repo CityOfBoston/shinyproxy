@@ -7,7 +7,7 @@ source /tmp/shiny_proxy_ip
 echo "attempting clone repos and build docker images from the following list"
 cat $ROOT/repositories.conf
 while read repo; do
-    export REPO_NAME=$(grep -P -o "git@github.com:CityOfBoston\/\w+.git")
+    export REPO_NAME=$(echo $repo | grep -P -o "git@github.com:CityOfBoston\/\w+.git")
     echo "cloning from ${REPO_NAME}"
     git clone $REPO_NAME
     echo "moving files to shiny server"
