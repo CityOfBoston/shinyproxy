@@ -3,7 +3,7 @@ set -e
 export ROOT=$PWD
 export SSH_KEYNAME="shinyproxy"
 export SSH_KEY_LOCATION="~/.ssh/shinyproxy.pem"
-export SHINY_PROXY_CONFIG_FILE="shinyproxy_application.yml"
+export SHINY_PROXY_CONFIG_FILE="application.yml"
 echo "config file is located here:"
 echo "shiny_proxy_config_file=${ROOT}/${SHINY_PROXY_CONFIG_FILE}"
 source /tmp/aws_cred_export.txt  && cd infrastructure/tf-stack/${DeploymentEnvironment} && \
