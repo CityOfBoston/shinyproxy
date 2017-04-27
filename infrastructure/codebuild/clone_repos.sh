@@ -22,12 +22,12 @@ cat $ROOT/repositories.conf
 
 export repo=$(cat $ROOT/repositories.conf)
 export REPO_NAME=$(echo $repo | grep -P -o "git@github.com:CityOfBoston\/\w+.git")
-export IMAGE_TAG=$(echo $repo | grep -P -o "^\w+")
+export NAME=$(echo $repo | grep -P -o "^\w+")
 git clone $REPO_NAME
-scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $IMAGE_TAG ubuntu@$SHINY_PROXY_IP:~/shinyproxy/
+scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $NAME ubuntu@$SHINY_PROXY_IP:~/shinyproxy/
 ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
-        cd ~/shinyproxy/$REPO_NAME
-        git checkout docker && docker build -t ${IMAGE_TAG} .
+        cd ~/shinyproxy/$NAME
+        git checkout docker && docker build -t ${NAME} .
 EOF
 echo "done installing docker images for repos"
 
