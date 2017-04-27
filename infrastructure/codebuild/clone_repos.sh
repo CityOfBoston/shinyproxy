@@ -4,7 +4,8 @@ mkdir shinyapps
 cd shinyapps
 source /tmp/shiny_proxy_ip
 
-echo "attempting clone repos and build docker images"
+echo "attempting clone repos and build docker images from the following list"
+cat $ROOT/repositories.conf
 while read repo; do
     echo "cloning from ${repo}"
     git clone $repo
