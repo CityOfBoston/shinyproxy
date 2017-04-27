@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
 # Ugh weird grub based errors started showing up on 4/24/17
-#https://serverfault.com/questions/662624/how-to-avoid-grub-errors-after-runing-apt-get-upgrade-ubunut
-sudo apt-get update
-sudo rm /boot/grub/menu.lst
-sudo update-grub-legacy-ec2 -y
-sudo apt-get dist-upgrade -qq --allow
-sudo reboot
+#https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
+
 
 sudo apt-get update -y && sudo apt-get upgrade -y
 sudo apt-get install -y awscli
