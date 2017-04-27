@@ -37,6 +37,7 @@ shiny:
     groups: scientists
   - name: bfd_response_times
     display-name: Boston Fire Department Dashboard
+    description: Boston Fire Department Dashboard
     docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
     docker-image: bostonanalytics/bfd_response_times
     groups: firedashboard
