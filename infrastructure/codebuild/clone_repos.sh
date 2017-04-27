@@ -14,7 +14,7 @@ while read repo; do
     scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $REPO_NAME ubuntu@$SHINY_PROXY_IP:~/shinyproxy/
     export IMAGE_TAG=$(echo $repo | grep -P -o "^\w+")
     echo "building docker images on shiny server"
-    ssh  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
+    ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
         cd ~/shinyproxy/$REPO_NAME
         git checkout docker && docker build -t ${IMAGE_TAG} .
 EOF
