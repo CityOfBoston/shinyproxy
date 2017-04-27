@@ -1,6 +1,6 @@
 shiny:
   proxy:
-    title: Boston Analytics Team Shiny
+    title: Open Analytics Shiny Proxy
     logo-url: http://www.openanalytics.eu/sites/www.openanalytics.eu/themes/oa/logo.png
     landing-page: /
     heartbeat-rate: 10000
@@ -35,11 +35,11 @@ shiny:
     docker-cmd: ["R", "-e shinyproxy::run_06_tabsets()"]
     docker-image: openanalytics/shinyproxy-demo
     groups: scientists
-  - name: bfd_dashboard
-    display-name: Boston Fire Department Dashboard
-    docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
-    docker-image: bostonanalytics/bfd-dashboard
-    groups: firedashboard
+#  - name: bfd_dashboard
+#    display-name: Boston Fire Department Dashboard
+#    docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
+#    docker-image: bostonanalytics/bfd-dashboard
+#    groups: firedashboard
 
 logging:
   file:
