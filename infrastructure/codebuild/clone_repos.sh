@@ -23,6 +23,7 @@ cat $ROOT/repositories.conf
 export repo=$(cat $ROOT/repositories.conf)
 export REPO_NAME=$(echo $repo | grep -P -o "git@github.com:CityOfBoston\/\w+.git")
 export NAME=$(echo $repo | grep -P -o "^\w+")
+git clone $REPO_NAME
 
 ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
  sudo rm -rf ~/shinyproxy/$NAME || echo "nothing here so nothing to delete"
