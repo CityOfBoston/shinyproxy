@@ -18,7 +18,7 @@ shiny:
       groups: mathematicians
     - name: bfd_analyst
       password: test_fires
-      groups: firedasboard
+      groups: firedashboard
     docker:
       cert-path: /home/none
       url: http://localhost:2375
@@ -35,11 +35,11 @@ shiny:
     docker-cmd: ["R", "-e shinyproxy::run_06_tabsets()"]
     docker-image: openanalytics/shinyproxy-demo
     groups: scientists
-#  - name: bfd_dashboard
-#    display-name: Boston Fire Department Dashboard
-#    docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
-#    docker-image: bostonanalytics/bfd-dashboard
-#    groups: firedashboard
+  - name: bfd_dashboard
+    display-name: Boston Fire Department Dashboard
+    docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
+    docker-image: bostonanalytics/bfd-dashboard
+    groups: firedashboard
 
 logging:
   file:
