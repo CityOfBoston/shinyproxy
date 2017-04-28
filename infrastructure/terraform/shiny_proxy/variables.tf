@@ -31,6 +31,10 @@ variable "ubuntu_ami_id" {
 }
 
 
+variable "shinyproxy_eip" {
+
+}
+
 
 variable "key_name" {
 

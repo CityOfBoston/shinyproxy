@@ -47,20 +47,23 @@ module "shinyproxy" {
   vpc_id = "${module.aws_vpc.vpc_id}"
   private_subnets = "${module.aws_vpc.private_subnets}"
   public_subnets = "${module.aws_vpc.public_subnets}"
-  instance_type = "m4.large"
+  instance_type = "${var.aws_instance_type}"
   environment = "${var.environment}"
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
   shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
   aws_region = "${var.aws_region}"
   key_name = "${var.ssh_key_name}"
+  shinyproxy_eip = "${var.shinyproxy_eip}"
 
 
 }
 
 
 
-
+variable "aws_instance_type" {
+  default = "m4.large"
+}
 
 variable "shiny_proxy_config_file" {
   description = "yaml configuration file for shinyproxy"
@@ -88,6 +91,9 @@ variable "environment" {
   #default = "development"
 }
 
+variable "shinyproxy_eip" {
+
+}
 
 output "shiny_proxy_ip" {
   value = "${module.shinyproxy.shiny_proxy_public_ip}"

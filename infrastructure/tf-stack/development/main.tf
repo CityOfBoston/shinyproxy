@@ -24,6 +24,12 @@ module "shiny_proxy_stack" {
   ssh_key_name = "${var.ssh_key_name}"
   aws_region = "${var.aws_region}"
   shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
+  shinyproxy_eip = "${var.shinyproxy_eip}"
+  aws_instance_type = "m4.large"
+}
+
+variable "shinyproxy_eip" {
+  default = "35.164.125.172"
 }
 
 provider "aws" {

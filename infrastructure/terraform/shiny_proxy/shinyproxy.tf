@@ -2,6 +2,10 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
+resource "aws_eip_association" "shinyproxy_eip_assoc" {
+  instance_id = "${aws_instance.shinyproxy.id}"
+  public_ip = "${var.shinyproxy_eip}"
+}
 
 resource "aws_instance" "shinyproxy" {
   key_name = "${var.key_name}"
