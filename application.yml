@@ -1,7 +1,8 @@
 shiny:
   proxy:
-    title: Open Analytics Shiny Proxy
-    logo-url: http://www.openanalytics.eu/sites/www.openanalytics.eu/themes/oa/logo.png
+    title: City of Boston Analytics Team
+    #logo-url: http://www.openanalytics.eu/sites/www.openanalytics.eu/themes/oa/logo.png
+    logo-url: https://github.com/CityOfBoston/official-header/blob/master/src/img/cob-logo.svg
     landing-page: /
     heartbeat-rate: 10000
     heartbeat-timeout: 60000
@@ -9,13 +10,6 @@ shiny:
     authentication: simple
     admin-groups: scientists
     # Simple auth configuration
-    users:
-    - name: jack
-      password: password
-      groups: scientists
-    - name: jeff
-      password: password
-      groups: mathematicians
     - name: bfd_analyst
       password: test_fires
       groups: scientists
