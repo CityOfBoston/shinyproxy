@@ -96,5 +96,5 @@ variable "shinyproxy_eip" {
 }
 
 output "shiny_proxy_ip" {
-  value = "${module.shinyproxy.shiny_proxy_public_ip}"
+  value = "${var.shinyproxy_eip}"#"${module.shinyproxy.shiny_proxy_public_ip}"
 }
