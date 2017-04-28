@@ -2,7 +2,7 @@ shiny:
   proxy:
     title: City of Boston Analytics Team
     #logo-url: http://www.openanalytics.eu/sites/www.openanalytics.eu/themes/oa/logo.png
-    logo-url: https://github.com/CityOfBoston/official-header/blob/master/src/img/cob-logo.svg
+    logo-url: https://raw.githubusercontent.com/CityOfBoston/official-header/master/src/img/cob-logo.svg?token=AEbV9a1tJhuWK3HTFXq7sRKDSwP-Jp60ks5ZDIajwA%3D%3D
     landing-page: /
     heartbeat-rate: 10000
     heartbeat-timeout: 60000
