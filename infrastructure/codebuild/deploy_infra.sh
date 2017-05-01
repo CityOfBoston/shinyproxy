@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+## This script is charged with running the appropriate Terraform Deploy depending on the environment specified in the
+## Code Pipeline
 set -e
 export ROOT=$PWD
 export SSH_KEYNAME="shinyproxy"

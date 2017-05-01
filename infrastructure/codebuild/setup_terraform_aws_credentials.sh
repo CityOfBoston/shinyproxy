@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+# This script will poll the AWS service for the temporary credentials so that we can provision resources
+# with terraform
 set -e
 echo "Starting to retrieve AWS Credentials to use in Terraform"
 # work around https://github.com/hashicorp/terraform/issues/8746

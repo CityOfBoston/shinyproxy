@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# This script sets up ssh Github access on the build server and pulls in the ssh key needed to access the AWS instance
+
 set -e
 echo "Starting to set up github access via ssh"
 export DEPLOY_KEYS_BUCKET=test-boston-deploy

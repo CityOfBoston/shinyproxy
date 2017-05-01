@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# This script will kill any running shiny proxy processes and start a new one
 source /tmp/shiny_proxy_ip
 
 scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no application.yml ubuntu@$SHINY_PROXY_IP:~/shinyproxy/application.yml
