@@ -10,7 +10,6 @@ source /tmp/shiny_proxy_ip
 echo "attempting clone repos and build docker images from the following list"
 cat $ROOT/repositories.conf
 while read repo; do
-  echo "Im in thisloop"
     export REPO_NAME=$(echo $repo | grep -P -o "git@github.com:CityOfBoston\/\w+.git")
     export NAME=$(echo $repo | grep -P -o "^\w+")
     echo cloning the following "$REPO_NAME"
@@ -19,7 +18,7 @@ while read repo; do
         sudo rm -rf ~/shinyproxy/$NAME && echo "Deleted old $NAME repo contents" || echo "nothing here so nothing to delete"
 EOF
     echo "copying over $NAME to the shinyproxy server"
-    scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ~/shinyapps/$NAME ubuntu@$SHINY_PROXY_IP:~/shinyproxy/$NAME
+    scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $NAME ubuntu@$SHINY_PROXY_IP:~/shinyproxy/$NAME
     ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
             cd ~/shinyproxy/$NAME
             echo "Building the $NAME docker image"
