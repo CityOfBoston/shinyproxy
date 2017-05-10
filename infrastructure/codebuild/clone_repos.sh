@@ -15,10 +15,10 @@ while read repo; do
     echo cloning the following "$REPO_NAME"
     git clone $REPO_NAME
     ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
-        sudo rm -rf ~/shinyproxy/$NAME && echo "Deleted old $NAME repo contents" || echo "nothing here so nothing to delete"
+        sudo rm -rf ~/shinyproxy/${NAME} && echo "Deleted old $NAME repo contents" || echo "nothing here so nothing to delete"
 EOF
     echo "copying over $NAME to the shinyproxy server"
-    scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r $NAME ubuntu@$SHINY_PROXY_IP:~/shinyproxy/$NAME
+    scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/${NAME}
     ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
             cd ~/shinyproxy/$NAME
             echo "Building the $NAME docker image"
