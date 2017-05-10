@@ -10,6 +10,7 @@ source /tmp/shiny_proxy_ip
 echo "attempting clone repos and build docker images from the following list"
 cat $ROOT/repositories.conf
 while read repo; do
+  echo "Im in thisloop"
     export REPO_NAME=$(echo $repo | grep -P -o "git@github.com:CityOfBoston\/\w+.git")
     export NAME=$(echo $repo | grep -P -o "^\w+")
     echo cloning the following "$REPO_NAME"
@@ -24,7 +25,7 @@ EOF
             echo "Building the $NAME docker image"
             sudo docker build -t bostonanalytics/${NAME} .
 EOF
-done < $ROOT/repositories.conf
+done <$ROOT/repositories.conf
 
 echo "done building docker images for shiny apps"
 
