@@ -9,7 +9,6 @@ source /tmp/shiny_proxy_ip
 
 echo "attempting clone repos and build docker images from the following list"
 cat $ROOT/repositories.conf
-#while read -r repo; do
 IFS=$'\n'
 set -f
 for repo in $(cat < $ROOT/repositories.conf); do
@@ -17,11 +16,8 @@ for repo in $(cat < $ROOT/repositories.conf); do
     export NAME=$(echo $repo | grep -P -o "^\w+")
     echo cloning the following "${REPO_NAME}"
     git clone ${REPO_NAME}
-    ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
-        sudo rm -rf ~/shinyproxy/${NAME} && echo "Deleted old $NAME repo contents" || echo "nothing here so nothing to delete"
-EOF
+
     echo "copying over ${NAME} to the shinyproxy server"
-    ls ${NAME}/
     scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/${NAME}
     ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
             cd ~/shinyproxy/$NAME
@@ -29,9 +25,12 @@ EOF
             sudo docker build -t bostonanalytics/${NAME} .
 EOF
 done
-#<$ROOT/repositories.conf
+
 
 echo "done building docker images for shiny apps"
 
 
+#    ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
+#        sudo rm -rf ~/shinyproxy/${NAME} && echo "Deleted old $NAME repo contents" || echo "nothing here so nothing to delete"
+#EOF
 
