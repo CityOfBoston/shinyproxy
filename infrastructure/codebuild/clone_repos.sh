@@ -22,7 +22,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
     ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
             cd ~/shinyproxy/$NAME
             echo "Building the $NAME docker image"
-            sudo docker build -t bostonanalytics/${NAME} .
+            sudo docker build --no-cache -t bostonanalytics/${NAME} .
 EOF
 done
 
