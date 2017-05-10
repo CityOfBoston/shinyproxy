@@ -29,8 +29,3 @@ done
 
 echo "done building docker images for shiny apps"
 
-
-#    ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
-#        sudo rm -rf ~/shinyproxy/${NAME} && echo "Deleted old $NAME repo contents" || echo "nothing here so nothing to delete"
-#EOF
-
