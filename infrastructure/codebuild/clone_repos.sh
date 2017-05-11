@@ -16,13 +16,13 @@ for repo in $(cat < $ROOT/repositories.conf); do
     export NAME=$(echo $repo | grep -P -o "^\w+")
     echo cloning the following "${REPO_NAME}"
     git clone ${REPO_NAME}
-
+    git pull origin master 
     echo "copying over ${NAME} to the shinyproxy server"
     scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/${NAME}
     ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ubuntu@${SHINY_PROXY_IP} << EOF
             cd ~/shinyproxy/$NAME
             echo "Building the $NAME docker image"
-            sudo docker build --no-cache -t bostonanalytics/${NAME} .
+            sudo docker build -t bostonanalytics/${NAME} .
 EOF
 done
 
