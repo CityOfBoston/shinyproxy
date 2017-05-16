@@ -19,7 +19,9 @@ resource "aws_instance" "shinyproxy" {
   }
   associate_public_ip_address = true
   monitoring = true
-
+  root_block_device {
+    volume_size = 100
+  }
   provisioner "file" {
     source = "${path.module}/bin/"
     destination = "/tmp/"
