@@ -2,33 +2,59 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
-resource "aws_eip_association" "shinyproxy_eip_assoc" {
-  instance_id = "${aws_instance.shinyproxy.id}"
-  public_ip = "${var.shinyproxy_eip}"
+
+
+data "aws_instance" "bastion" {
+  filter {
+    name = "tag:Name"
+    values = ["bastion"]
+  }
 }
+
+
+data  "aws_security_group" "bastion_sg" {
+  filter {
+    name = "tag:Name"
+    values = ["bastion"]
+  }
+}
+
 
 resource "aws_instance" "shinyproxy" {
   key_name = "${var.key_name}"
   instance_type = "${var.instance_type}"
   ami = "${var.ubuntu_ami_id}"
-  vpc_security_group_ids = ["${aws_default_security_group.default.id}","${aws_security_group.shinyproxy.id}"]
+  vpc_security_group_ids = ["${aws_default_security_group.default.id}", "${aws_security_group.shinyproxy.id}","${data.aws_security_group.bastion_sg.id}"]
   subnet_id = "${element(var.private_subnet_id, 1)}"
   tags {
     Name = "shinyproxyserver"
     Environment = "${var.environment}"
   }
-  associate_public_ip_address = true
   monitoring = true
   root_block_device {
     volume_size = 100
   }
+
   provisioner "file" {
     source = "${path.module}/bin/"
     destination = "/tmp/"
     connection {
-      user = "ubuntu"
+      user = "ec2-user"
       type = "ssh"
-      host = "${self.public_ip}"
+      agent = true
+      host = "${data.aws_instance.bastion.public_ip}"
+      timeout = "5m"
+      private_key = "${file(var.ssh_key)}"
+    }
+  }
+  provisioner "file" {
+    source = "${var.shiny_proxy_config_file}"
+    destination = "/tmp/application.yml"
+    connection {
+      user = "ec2-user"
+      type = "ssh"
+      agent = true
+      host = "${data.aws_instance.bastion.public_ip}"
       timeout = "5m"
       private_key = "${file(var.ssh_key)}"
     }
@@ -36,28 +62,23 @@ resource "aws_instance" "shinyproxy" {
 
   provisioner "remote-exec" {
     inline = [
-      "mkdir -p ~/shinyproxy/bin",
-      "mv /tmp/install_shiny_proxy.sh ~/shinyproxy/bin",
-      "chmod u+x ~/shinyproxy/bin/install_shiny_proxy.sh",
-      "./shinyproxy/bin/install_shiny_proxy.sh"
+      "ssh -o StrictHostKeyChecking=no ubuntu@${self.private_ip} mkdir -p /home/ubuntu/shinyproxy/bin",
+      "scp -o StrictHostKeyChecking=no /tmp/install_shiny_proxy.sh ubuntu@${self.private_ip}:~/shinyproxy/bin",
+      "scp -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${self.private_ip}:~/shinyproxy/application.yml",
+      "ssh -o StrictHostKeyChecking=no ubuntu@${self.private_ip} chmod u+x ~/shinyproxy/bin/install_shiny_proxy.sh",
+      "ssh -o StrictHostKeyChecking=no ubuntu@${self.private_ip} ~/shinyproxy/bin/install_shiny_proxy.sh"
+
     ]
     connection {
-      user = "ubuntu"
+      bastion_user = "ec2-user"
       type = "ssh"
-      host = "${self.public_ip}"
-      timeout = "5m"
+      bastion_host = "${data.aws_instance.bastion.public_ip}"
+      bastion_private_key = "${file(var.ssh_key)}"
       private_key = "${file(var.ssh_key)}"
-    }
-  }
-  provisioner "file" {
-    source = "${var.shiny_proxy_config_file}"
-    destination = "~/shinyproxy/application.yml"
-    connection {
+      bastion_port = 22
       user = "ubuntu"
-      type = "ssh"
-      host = "${self.public_ip}"
-      timeout = "5m"
-      private_key = "${file(var.ssh_key)}"
+      timeout = "2m"
+
     }
   }
 
@@ -92,8 +113,7 @@ resource "aws_security_group" "shinyproxy" {
     from_port = 8080
     to_port = 8080
     protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
     self = true
   }
 
@@ -104,14 +124,12 @@ resource "aws_security_group" "shinyproxy" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # SSH access
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 22
+    to_port = 22
+    protocol  = "tcp"
+    cidr_blocks = ["${var.vpc_cidr}"]
   }
-
 
 
 }

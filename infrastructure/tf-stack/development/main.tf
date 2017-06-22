@@ -41,6 +41,7 @@ variable "alb_arn" {
   default = "arn:aws:elasticloadbalancing:us-west-2:811289587868:loadbalancer/app/dev-alb-tf/abd5ab0d551e2b0d"
 }
 
+
 module "shiny_proxy" {
   source = "../../terraform/shiny_proxy"
   shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
@@ -49,10 +50,11 @@ module "shiny_proxy" {
   aws_region = "${var.aws_region}"
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
-  shinyproxy_eip = "${var.shinyproxy_eip}"
   key_name = "${var.ssh_key_name}"
-  private_subnet_id  = "${data.aws_subnet.private.*.id}"
+  private_subnet_id = "${data.aws_subnet.private.*.id}"
   alb_arn = "${var.alb_arn}"
+  vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
+
 }
 
 
