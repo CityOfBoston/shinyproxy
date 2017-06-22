@@ -14,16 +14,14 @@ variable "instance_type" {
   default = "m4.large"
 }
 
-variable "private_subnets" {
-default = []
-}
 
 variable "public_subnets" {
-default = []
+  description = "public subnet to launch the instance in"
+  type = "list"
 }
 
 variable "ssh_key" {
-
+  description = "Your private key file"
 }
 
 variable "ubuntu_ami_id" {
@@ -44,3 +42,9 @@ variable "key_name" {
 variable "shiny_proxy_config_file" {
 
 }
+
+variable "azs" {
+  description = "AWS Region Availablity Zones"
+
+}
+

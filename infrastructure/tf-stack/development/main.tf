@@ -16,17 +16,61 @@ variable "shiny_proxy_config_file" {
   default ="../../../application.yml"
 }
 
-module "shiny_proxy_stack" {
-  source = "../../terraform"
-  azs = "us-west-2b"
-  environment = "development"
-  ssh_key = "${var.ssh_key}"
-  ssh_key_name = "${var.ssh_key_name}"
-  aws_region = "${var.aws_region}"
-  shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
-  shinyproxy_eip = "${var.shinyproxy_eip}"
-  aws_instance_type = "m4.large"
+variable "vpc_id" {
+  default = "vpc-ebaf588d"
 }
+
+variable "environment" {
+  default = "development"
+}
+
+variable "azs" {
+  description = "AWS Region Availablity Zones"
+  default = "us-west-2b"
+}
+
+
+module "shiny_proxy" {
+  source = "../../terraform/shiny_proxy"
+  shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
+  vpc_id = "${var.vpc_id}"
+  environment = "${var.environment}"
+  aws_region = "${var.aws_region}"
+  ssh_key = "${var.ssh_key}"
+  ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
+  shinyproxy_eip = "${var.shinyproxy_eip}"
+  key_name = "${var.ssh_key_name}"
+  azs = "${var.azs}"
+  public_subnets = "${data.aws_subnet_ids.public_subnets}"
+
+}
+
+
+
+data "aws_vpc" "dev_vpc" {
+  id = "${var.vpc_id}"
+}
+
+
+data "aws_subnet_ids" "public_subnets" {
+  vpc_id = "${data.dev_vpc.vpc_id}"
+
+  tags {
+    "Name" = "${var.environment}-vpc-subnet-public-${element(var.azs, count.index)}"
+  }
+
+}
+
+module "ubuntu_ami" {
+  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami"
+  region = "${var.aws_region}"
+  distribution = "xenial"
+  architecture = "amd64"
+  virttype = "hvm"
+  storagetype = "ebs-ssd"
+}
+
+
 
 variable "shinyproxy_eip" {
   default = "35.164.125.172"
@@ -47,5 +91,5 @@ terraform {
 }
 
 output "shiny_proxy_ip" {
-  value = "${module.shiny_proxy_stack.shiny_proxy_ip}"
+  value = "${module.shiny_proxy.shiny_proxy_public_ip}"
 }
