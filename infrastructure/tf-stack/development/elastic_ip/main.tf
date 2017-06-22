@@ -18,11 +18,11 @@ output  "shiny_proxy_eip" {
 
 
 terraform {
-  required_version = "v0.9.3"
+  required_version = "v0.9.6"
   backend "s3" {
-    bucket = "dev-boston-analytics-terraform-state"
-    key = "dev-shiny-proxy-eip"
-    region = "us-west-2"
+    bucket = "city-of-boston"
+    key = "deployments/terraform/shinyproxy/elasticip/development.tfstate"
+    region = "us-east-1"
     encrypt = "true"
   }
 }

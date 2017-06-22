@@ -15,8 +15,8 @@ variable "instance_type" {
 }
 
 
-variable "public_subnets" {
-  description = "public subnet to launch the instance in"
+variable "public_subnet_id" {
+  description = "public subnet id to launch the instance in"
   type = "list"
 }
 
@@ -43,8 +43,6 @@ variable "shiny_proxy_config_file" {
 
 }
 
-variable "azs" {
-  description = "AWS Region Availablity Zones"
-
+variable "alb_arn" {
+  type = "string"
 }
-

@@ -1,34 +1,44 @@
 variable "aws_region" {
+  type = "string"
   default = "us-west-2"
 }
 
 variable "ssh_key" {
   description = "location of ssh key for instance"
+  type = "string"
   default = "~/.ssh/shinyproxy.pem"
 }
 
 variable "ssh_key_name" {
   description = "Name of the AWS Keypair"
+  type = "string"
   default = "shinyproxy"
 }
 
 variable "shiny_proxy_config_file" {
+  type = "string"
   default ="../../../application.yml"
 }
 
 variable "vpc_id" {
+  type = "string"
   default = "vpc-ebaf588d"
 }
 
 variable "environment" {
+  type = "string"
   default = "development"
 }
 
 variable "azs" {
   description = "AWS Region Availablity Zones"
-  default = "us-west-2b"
+  type = "list"
+  default = ["us-west-2b"]
 }
 
+variable "alb_listener_arn" {
+  type = "string"
+}
 
 module "shiny_proxy" {
   source = "../../terraform/shiny_proxy"
@@ -40,8 +50,8 @@ module "shiny_proxy" {
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
   shinyproxy_eip = "${var.shinyproxy_eip}"
   key_name = "${var.ssh_key_name}"
-  azs = "${var.azs}"
-  public_subnets = "${data.aws_subnet_ids.public_subnets}"
+  private_subnet_id  = "${data.aws_subnet.private.*.id}"
+  alb_listener_arn = "${var.alb_listener_arn}"
 
 }
 
@@ -52,14 +62,17 @@ data "aws_vpc" "dev_vpc" {
 }
 
 
-data "aws_subnet_ids" "public_subnets" {
-  vpc_id = "${data.dev_vpc.vpc_id}"
 
+
+data "aws_subnet" "private" {
+  vpc_id = "${var.vpc_id}"
+  count = "${length(var.azs)}"
+  availability_zone = "${element(var.azs,count.index)}"
   tags {
-    "Name" = "${var.environment}-vpc-subnet-public-${element(var.azs, count.index)}"
+    Name = "${var.environment}-vpc-subnet-private-${element(var.azs,count.index)}"
   }
-
 }
+
 
 module "ubuntu_ami" {
   source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami"
@@ -73,7 +86,7 @@ module "ubuntu_ami" {
 
 
 variable "shinyproxy_eip" {
-  default = "35.164.125.172"
+  default = "34.208.232.53"
 }
 
 provider "aws" {
@@ -81,14 +94,15 @@ provider "aws" {
 }
 
 terraform {
-  required_version = "v0.9.3"
+  required_version = "v0.9.6"
   backend "s3" {
-    bucket = "dev-boston-analytics-terraform-state"
-    key = "dev-shiny-proxy"
-    region = "us-west-2"
+    bucket = "city-of-boston"
+    key = "deployments/terraform/shinyproxy/development.tfstate"
+    region = "us-east-1"
     encrypt = "true"
   }
 }
+
 
 output "shiny_proxy_ip" {
   value = "${module.shiny_proxy.shiny_proxy_public_ip}"
