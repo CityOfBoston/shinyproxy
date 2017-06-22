@@ -39,45 +39,55 @@ resource "aws_instance" "shinyproxy" {
     source = "${path.module}/bin/"
     destination = "/tmp/"
     connection {
-      user = "ec2-user"
       type = "ssh"
-      agent = true
-      host = "${data.aws_instance.bastion.public_ip}"
-      timeout = "5m"
+      bastion_user = "ec2-user"
+      bastion_host = "${data.aws_instance.bastion.public_ip}"
+      bastion_private_key = "${file(var.ssh_key)}"
+      bastion_port = 22
+      agent = false
+      user = "ubuntu"
+      host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
+      timeout = "3m"
     }
   }
   provisioner "file" {
     source = "${var.shiny_proxy_config_file}"
     destination = "/tmp/application.yml"
     connection {
-      user = "ec2-user"
       type = "ssh"
-      agent = true
-      host = "${data.aws_instance.bastion.public_ip}"
-      timeout = "5m"
+      bastion_user = "ec2-user"
+      bastion_host = "${data.aws_instance.bastion.public_ip}"
+      bastion_private_key = "${file(var.ssh_key)}"
+      bastion_port = 22
+      agent = false
+      user = "ubuntu"
+      host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
+      timeout = "3m"
     }
   }
 
   provisioner "remote-exec" {
     inline = [
-      "ssh -o StrictHostKeyChecking=no ubuntu@${self.private_ip} mkdir -p /home/ubuntu/shinyproxy/bin",
-      "scp -o StrictHostKeyChecking=no /tmp/install_shiny_proxy.sh ubuntu@${self.private_ip}:~/shinyproxy/bin",
-      "scp -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${self.private_ip}:~/shinyproxy/application.yml",
-      "ssh -o StrictHostKeyChecking=no ubuntu@${self.private_ip} chmod u+x ~/shinyproxy/bin/install_shiny_proxy.sh",
-      "ssh -o StrictHostKeyChecking=no ubuntu@${self.private_ip} ~/shinyproxy/bin/install_shiny_proxy.sh"
+      "mkdir -p ~/shinyproxy/bin",
+      "mv /tmp/install_shiny_proxy.sh ~/shinyproxy/bin",
+      "mv /tmp/application.yml ~/shinyproxy/application.yml",
+      "chmod u+x ~/shinyproxy/bin/install_shiny_proxy.sh",
+      " ~/shinyproxy/bin/install_shiny_proxy.sh"
 
     ]
     connection {
-      bastion_user = "ec2-user"
       type = "ssh"
+      bastion_user = "ec2-user"
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
-      private_key = "${file(var.ssh_key)}"
       bastion_port = 22
+      agent = false
       user = "ubuntu"
-      timeout = "2m"
+      host = "${self.private_ip}"
+      private_key = "${file(var.ssh_key)}"
+      timeout = "3m"
 
     }
   }
