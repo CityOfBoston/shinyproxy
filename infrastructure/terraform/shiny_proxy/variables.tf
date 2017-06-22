@@ -29,11 +29,6 @@ variable "ubuntu_ami_id" {
 }
 
 
-variable "shinyproxy_eip" {
-
-}
-
-
 variable "key_name" {
 
 }
@@ -44,5 +39,10 @@ variable "shiny_proxy_config_file" {
 }
 
 variable "alb_arn" {
+  type = "string"
+}
+
+
+variable "vpc_cidr" {
   type = "string"
 }
