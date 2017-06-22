@@ -48,11 +48,6 @@ Metadata:
           - DeploymentEnvironment
 
 Resources:
-  TerraformStateBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      VersioningConfiguration:
-        Status: Enabled
   ArtifactStoreBucket:
     Type: AWS::S3::Bucket
     Properties:
