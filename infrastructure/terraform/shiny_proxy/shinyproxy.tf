@@ -65,11 +65,6 @@ resource "aws_instance" "shinyproxy" {
 
 
 
-data "aws_vpc" "aws_vpc" {
-  id = "${var.vpc_id}"
-}
-
-
 resource "aws_default_security_group" "default" {
   vpc_id = "${var.vpc_id}"
 
