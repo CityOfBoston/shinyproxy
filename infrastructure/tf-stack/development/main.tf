@@ -36,8 +36,9 @@ variable "azs" {
   default = ["us-west-2b"]
 }
 
-variable "alb_listener_arn" {
+variable "alb_arn" {
   type = "string"
+  default = "arn:aws:elasticloadbalancing:us-west-2:811289587868:loadbalancer/app/dev-alb-tf/abd5ab0d551e2b0d"
 }
 
 module "shiny_proxy" {
@@ -51,8 +52,7 @@ module "shiny_proxy" {
   shinyproxy_eip = "${var.shinyproxy_eip}"
   key_name = "${var.ssh_key_name}"
   private_subnet_id  = "${data.aws_subnet.private.*.id}"
-  alb_listener_arn = "${var.alb_listener_arn}"
-
+  alb_arn = "${var.alb_arn}"
 }
 
 

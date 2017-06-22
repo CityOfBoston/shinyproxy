@@ -15,7 +15,7 @@ variable "instance_type" {
 }
 
 
-variable "public_subnet_id" {
+variable "private_subnet_id" {
   description = "public subnet id to launch the instance in"
   type = "list"
 }
