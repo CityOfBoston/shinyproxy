@@ -48,7 +48,7 @@ resource "aws_instance" "shinyproxy" {
       user = "ubuntu"
       host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
-      timeout = "3m"
+      timeout = "5m"
     }
   }
   provisioner "file" {
@@ -64,7 +64,7 @@ resource "aws_instance" "shinyproxy" {
       user = "ubuntu"
       host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
-      timeout = "3m"
+      timeout = "5m"
     }
   }
 
@@ -87,7 +87,7 @@ resource "aws_instance" "shinyproxy" {
       user = "ubuntu"
       host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
-      timeout = "3m"
+      timeout = "5m"
 
     }
   }
