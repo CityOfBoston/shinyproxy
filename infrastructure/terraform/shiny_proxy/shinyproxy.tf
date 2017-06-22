@@ -12,7 +12,7 @@ resource "aws_instance" "shinyproxy" {
   instance_type = "${var.instance_type}"
   ami = "${var.ubuntu_ami_id}"
   vpc_security_group_ids = ["${aws_default_security_group.default.id}","${aws_security_group.shinyproxy.id}"]
-  subnet_id = "${element(var.public_subnets, 1)}"
+  subnet_id = "${element(var.public_subnet_id, 1)}"
   tags {
     Name = "shinyproxyserver"
     Environment = "${var.environment}"
@@ -85,6 +85,7 @@ resource "aws_default_security_group" "default" {
 
 
 resource "aws_security_group" "shinyproxy" {
+  name = "shinyproxy-security-group"
   vpc_id = "${var.vpc_id}"
   #Allows access from the web to this instance
   ingress {
@@ -111,6 +112,53 @@ resource "aws_security_group" "shinyproxy" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+
+
+}
+
+
+data "aws_alb" "front_end" {
+  arn = "${var.alb_arn}"
+}
+
+
+resource "aws_alb_listener" "shiny_listener" {
+  load_balancer_arn = "${var.alb_arn}"
+  port = 80
+  protocol = "HTTP"
+  default_action {
+    target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
+    type = "forward"
+  }
+}
+
+resource "aws_alb_listener_rule" "shiny" {
+  listener_arn = "${aws_alb_listener.shiny_listener.arn}"
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/shiny/*"]
+  }
+}
+
+
+
+resource  "aws_alb_target_group" "shiny_group" {
+  port = 80
+  protocol = "HTTP"
+  vpc_id = "${var.vpc_id}"
+}
+
+resource "aws_alb_target_group_attachment" "shiny_server" {
+  target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
+  target_id = "${aws_instance.shinyproxy.id}"
+  port = 8080
 }
 
 output "shiny_proxy_public_ip" {
