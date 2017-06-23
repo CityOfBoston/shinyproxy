@@ -20,5 +20,6 @@ echo "Successfully deployed application. I probably should start testing it"
 
 echo -e BASTION_PUBLIC_IP=$(terraform output -json bastion_public_ip | jq '.value' | sed -e 's/^"//' | sed -e 's/"$//') > \
 /tmp/shiny_proxy_ip
-echo -e SHINY_PROXY_IP=$(terraform output -json shiny_proxy_private_ip | jq '.value' | sed -e 's/^"//' | sed -e 's/"$//') >> \
-/tmp/shiny_proxy_ip
+echo -e SHINY_PROXY_IP=$(terraform output -json shiny_proxy_private_ip | jq '.value' | sed -e 's/^"//' | sed -e 's/"$//') >> /tmp/shiny_proxy_ip
+echo "whats in this file"
+cat /tmp/shiny_proxy_ip
