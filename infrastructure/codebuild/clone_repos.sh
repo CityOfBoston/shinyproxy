@@ -17,7 +17,9 @@ for repo in $(cat < $ROOT/repositories.conf); do
     echo cloning the following "${REPO_NAME}"
     git clone ${REPO_NAME}
     echo "copying over ${NAME} to the shinyproxy server"
-    echo "why is this ip not resolving: ${SHINY_PROXY_IP} ?"
+    echo "why is this shiny ip not resolving: ${SHINY_PROXY_IP} ?"
+    echo "why is this bastion ip not resolving: ${BASTION_PUBLIC_IP} ?"
+  
     #sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
     sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
     ssh -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
