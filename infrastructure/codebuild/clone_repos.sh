@@ -25,11 +25,11 @@ for repo in $(cat < $ROOT/repositories.conf); do
 EOF
 
     ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
-            ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
+            ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
             cd ~/shinyproxy/$NAME
             echo "Building the $NAME docker image"
-BAS
             sudo docker build -t bostonanalytics/${NAME} .
+BAS
 EOF
 done
 
