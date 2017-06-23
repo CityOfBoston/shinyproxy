@@ -20,11 +20,11 @@ for repo in $(cat < $ROOT/repositories.conf); do
     echo "why is this ip not resolving: ${SHINY_PROXY_IP} ?"
     #sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
     sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
-    ssh -T -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
+    ssh -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
         sudo scp -r /tmp/shinyproxy/ ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 EOF
 
-    ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
+    ssh  -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
             echo "is this getting over"
             echo ${SHINY_PROXY_IP}
             ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
