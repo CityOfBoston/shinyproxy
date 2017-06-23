@@ -107,5 +107,5 @@ terraform {
 
 
 output "shiny_proxy_ip" {
-  value = "${module.shiny_proxy.shiny_proxy_public_ip}"
+  value = "${module.shiny_proxy.shiny_private_ip}"
 }
