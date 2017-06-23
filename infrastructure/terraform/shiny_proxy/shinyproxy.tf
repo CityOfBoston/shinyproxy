@@ -44,7 +44,7 @@ resource "aws_instance" "shinyproxy" {
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
       bastion_port = 22
-      agent = true
+      agent = false
       user = "ubuntu"
       host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
@@ -60,7 +60,7 @@ resource "aws_instance" "shinyproxy" {
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
       bastion_port = 22
-      agent = true
+      agent = false
       user = "ubuntu"
       host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
@@ -83,7 +83,7 @@ resource "aws_instance" "shinyproxy" {
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
       bastion_port = 22
-      agent = true
+      agent = false
       user = "ubuntu"
       host = "${self.private_ip}"
       private_key = "${file(var.ssh_key)}"
