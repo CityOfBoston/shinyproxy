@@ -19,10 +19,10 @@ for repo in $(cat < $ROOT/repositories.conf); do
     echo "copying over ${NAME} to the shinyproxy server"
     echo "why is this shiny ip not resolving: ${SHINY_PROXY_IP} ?"
     echo "why is this bastion ip not resolving: ${BASTION_PUBLIC_IP} ?"
-  
+
     #sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
-    sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
-    ssh -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
+    sudo scp -v -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
+    ssh -v -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
         sudo scp -r /tmp/shinyproxy/ ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 EOF
 
@@ -35,7 +35,7 @@ EOF
 #            sudo docker build -t bostonanalytics/${NAME} .
 #BAS
 #EOF
-ssh -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} echo "Well am I able to ssh here "
+ssh -v -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} echo "Well am I able to ssh here "
 done
 
 
