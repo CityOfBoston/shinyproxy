@@ -24,15 +24,16 @@ for repo in $(cat < $ROOT/repositories.conf); do
         sudo scp -r /tmp/shinyproxy/ ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 EOF
 
-    ssh  -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
-            echo "is this getting over"
-            echo ${SHINY_PROXY_IP}
-            ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
-            cd ~/shinyproxy/$NAME
-            echo "Building the $NAME docker image"
-            sudo docker build -t bostonanalytics/${NAME} .
-BAS
-EOF
+#    ssh  -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
+#            echo "is this getting over"
+#            echo ${SHINY_PROXY_IP}
+#            ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
+#            cd ~/shinyproxy/$NAME
+#            echo "Building the $NAME docker image"
+#            sudo docker build -t bostonanalytics/${NAME} .
+#BAS
+#EOF
+ssh -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} echo "Well am I able to ssh here "
 done
 
 
