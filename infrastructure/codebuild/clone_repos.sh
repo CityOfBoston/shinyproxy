@@ -27,13 +27,10 @@ for repo in $(cat < $ROOT/repositories.conf); do
             echo "Moving files from bastion to server"
             sudo scp -v -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 
-            ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
-                cd ~/shinyproxy/$NAME
-                echo "Building the $NAME docker image"
+            ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} cd ~/shinyproxy/$NAME && \
+                echo "Building the $NAME docker image" && \
                 sudo docker build -t bostonanalytics/${NAME} .
-    BAS
 EOF
-
 done
 
 
