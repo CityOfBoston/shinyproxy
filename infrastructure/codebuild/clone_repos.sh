@@ -19,9 +19,10 @@ for repo in $(cat < $ROOT/repositories.conf); do
     echo "copying over ${NAME} to the shinyproxy server"
 
     #sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/shinyproxy.pem
     echo "is agent forwarding working"
     echo "$SSH_AUTH_SOCK"
-    ssh-add ~/.ssh/shinyproxy.pem
     echo "is key visible"
     ssh-add -L
     sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
