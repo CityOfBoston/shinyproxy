@@ -25,7 +25,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
     echo "is key visible"
     ssh-add -L
     sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
-    ssh -v -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
+    ssh -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
         sudo scp -r /tmp/shinyproxy/ ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 EOF
 
