@@ -25,7 +25,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
     sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/${NAME}
     ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
             echo "Moving files from bastion to server"
-            sudo scp -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
+            sudo scp -v -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 
             ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} << BAS
             cd ~/shinyproxy/$NAME
