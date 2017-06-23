@@ -106,6 +106,6 @@ terraform {
 }
 
 
-output "shiny_proxy_ip" {
+output "shiny_proxy_private_ip" {
   value = "${module.shiny_proxy.shiny_private_ip}"
 }
