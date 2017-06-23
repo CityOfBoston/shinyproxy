@@ -21,7 +21,10 @@ for repo in $(cat < $ROOT/repositories.conf); do
     #sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
     echo "is agent forwarding working"
     echo "$SSH_AUTH_SOCK"
-    sudo scp -v -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
+    ssh-add ~/.ssh/shinyproxy.pem
+    echo "is key visible"
+    ssh-add -L
+    sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/shinyproxy/
     ssh -v -T  -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
         sudo scp -r /tmp/shinyproxy/ ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
 EOF
