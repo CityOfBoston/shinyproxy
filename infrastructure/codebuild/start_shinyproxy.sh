@@ -11,6 +11,9 @@ source /tmp/shiny_proxy_ip
 # nohup /tmp/start_proxy.sh  >/dev/null 2>&1 &
 #EOF
 
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/shinyproxy.pem
+
 scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no application.yml ec2-user@BASTION_PUBLIC_IP:/tmp/shinyproxy/application.yml
 ssh -T -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} << EOF
 scp -o StrictHostKeyChecking=no /tmp/shinyproxy/application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/shinyproxy/application.yml

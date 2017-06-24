@@ -26,11 +26,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
 	ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
 echo "Moving files from bastion to server"
 sudo scp -v -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/
-
-ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP}<< DOF
-cd ~/shinyproxy/$NAME &&\
-sudo docker build -t bostonanalytics/${NAME} .
-DOF
+ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} cd ~/shinyproxy/$NAME && sudo docker build -t bostonanalytics/${NAME} .
 EOF
 
 done
