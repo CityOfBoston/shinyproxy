@@ -20,8 +20,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
 	echo cloning the following "${REPO_NAME}"
 	git clone ${REPO_NAME}
 	echo "copying over ${NAME} to the shinyproxy server"
-
-
+    sudo chown ${NAME}
 	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/${NAME}
 #	ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} << EOF
 #echo "Moving files from bastion to server"
