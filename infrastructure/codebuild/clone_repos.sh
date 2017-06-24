@@ -31,7 +31,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
             cd ~/shinyproxy/$NAME
             echo "Building the $NAME docker image"
             sudo docker build -t bostonanalytics/${NAME} .
-    BAS
+BAS
 EOF
 
 done
