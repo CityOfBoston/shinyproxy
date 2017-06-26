@@ -26,7 +26,7 @@ for repo in $(cat < $ROOT/repositories.conf); do
 		sudo scp -v -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy
 		ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- DOF
 			cd ~/shinyproxy/${NAME} && sudo docker build -t bostonanalytics/${NAME} .
-			DOF
+		DOF
 EOF
 done
 
