@@ -40,7 +40,7 @@ resource "aws_instance" "shinyproxy" {
     destination = "/tmp/"
     connection {
       type = "ssh"
-      bastion_user = "ec2-user"
+      bastion_user = "ubuntu"
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
       bastion_port = 22
@@ -56,7 +56,7 @@ resource "aws_instance" "shinyproxy" {
     destination = "/tmp/application.yml"
     connection {
       type = "ssh"
-      bastion_user = "ec2-user"
+      bastion_user = "ubuntu"
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
       bastion_port = 22
@@ -79,7 +79,7 @@ resource "aws_instance" "shinyproxy" {
     ]
     connection {
       type = "ssh"
-      bastion_user = "ec2-user"
+      bastion_user = "ubuntu"
       bastion_host = "${data.aws_instance.bastion.public_ip}"
       bastion_private_key = "${file(var.ssh_key)}"
       bastion_port = 22
