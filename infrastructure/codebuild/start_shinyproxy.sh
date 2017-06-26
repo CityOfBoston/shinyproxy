@@ -8,9 +8,9 @@ ssh-add ~/.ssh/shinyproxy.pem
 echo "why cant it find the applicaiton file"
 echo $(ls $pwd)
 echo $(pwd)
-scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no application.yml ec2-user@${BASTION_PUBLIC_IP}:/tmp/application.yml
+scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no application.yml ec2-user@${BASTION_PUBLIC_IP}:/tmp/
 ssh -T -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} <<EOF
-	scp -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/shinyproxy/application.yml
+	scp -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/shinyproxy/
 	ssh -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- 'DOF'
 		echo "going to kill any shinyproxy processes before starting up a new one"
 		cd ~/shinyproxy
