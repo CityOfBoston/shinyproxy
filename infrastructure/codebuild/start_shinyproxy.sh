@@ -5,7 +5,8 @@ source /tmp/shiny_proxy_ip
 
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/shinyproxy.pem
-
+echo "why cant it find the applicaiton file"
+ls ~/
 scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ~/application.yml ec2-user@${BASTION_PUBLIC_IP}:/tmp/application.yml
 ssh -T -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTION_PUBLIC_IP} << EOF
 scp -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/shinyproxy/application.yml
