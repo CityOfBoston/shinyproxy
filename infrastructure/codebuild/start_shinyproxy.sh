@@ -11,7 +11,7 @@ ssh -T -A -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ec2-user@${BASTIO
 	ssh-add -l
 	sudo scp -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/shinyproxy
 
-	ssh -A -T -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- 'DOF'
+	ssh -A -T -v -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- 'DOF'
 		echo "going to kill any shinyproxy processes before starting up a new one"
 		cd ~/shinyproxy
 		echo "(jps -ml | grep shinyproxy | grep -P -o \"\\d+\\s\" | awk \"{print $1}\" | xargs kill) || echo \"nothing currently running\"; java -jar shinyproxy-0.8.7.jar" > /tmp/start_proxy.sh
