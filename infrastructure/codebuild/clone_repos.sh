@@ -21,9 +21,9 @@ for repo in $(cat < $ROOT/repositories.conf); do
 	git clone ${REPO_NAME}
 	echo "copying over ${NAME} to the shinyproxy server"
     sudo chown -R $USER:$USER ${NAME}
-	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp/${NAME}
-    ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} 'sudo scp -v -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy/'
-    ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} 'ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} cd ~/shinyproxy/$NAME && sudo docker build -t bostonanalytics/${NAME} .'
+	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no -r ${NAME} ec2-user@${BASTION_PUBLIC_IP}:/tmp
+    ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} 'sudo scp -v -rf /tmp/${NAME} ubuntu@${SHINY_PROXY_IP}:~/shinyproxy'
+    ssh -A -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no  ec2-user@${BASTION_PUBLIC_IP} 'ssh -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} cd ~/shinyproxy/${NAME} && sudo docker build -t bostonanalytics/${NAME} .'
 done
 
 
