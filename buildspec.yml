@@ -22,6 +22,7 @@ phases:
         - chmod u+x infrastructure/terraform/shiny_proxy/bin/install_shiny_proxy.sh
         - infrastructure/codebuild/setup_terraform_aws_credentials.sh
         - infrastructure/codebuild/deploy_infra.sh
+        - infrastructure/codebuild/setup_bastion.sh
         - infrastructure/codebuild/clone_repos.sh
         - infrastructure/codebuild/start_shinyproxy.sh
 
