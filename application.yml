@@ -17,6 +17,9 @@ shiny:
     - name: imagine-boston
       password: boston2030rocks
       groups: scientists
+    - name: housing_analyst
+      password: increase-seaward-hoard
+      groups: housing
     docker:
       cert-path: /home/none
       url: http://localhost:2375
@@ -36,6 +39,13 @@ shiny:
     docker-cmd: ["R", "-e shiny::runApp('/root/imagine_boston')"]
     docker-image: bostonanalytics/imagine_boston
     groups: scientists
+
+  - name: eviction-analysis
+    display-name: Eviction Analysis
+    description: Shows number of evictions per block group in Boston for 2016
+    docker-cmd: ["R", "-e shiny::runApp('/root/evictions')"]
+    docker-image: bostonanalytics/evictions
+    groups: housing
 
 
 logging:
