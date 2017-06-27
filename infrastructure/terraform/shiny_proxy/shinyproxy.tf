@@ -152,7 +152,7 @@ data "aws_alb" "front_end" {
 
 resource "aws_alb_listener" "shiny_listener" {
   load_balancer_arn = "${var.alb_arn}"
-  port = 80
+  port = 8080
   protocol = "HTTP"
   default_action {
     target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
@@ -169,6 +169,7 @@ resource "aws_alb_listener_rule" "shiny" {
     target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
   }
 
+
   condition {
     field  = "path-pattern"
     values = ["/shiny/*"]
@@ -178,9 +179,19 @@ resource "aws_alb_listener_rule" "shiny" {
 
 
 resource  "aws_alb_target_group" "shiny_group" {
-  port = 80
+  port = 8080
   protocol = "HTTP"
   vpc_id = "${var.vpc_id}"
+
+    health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    protocol = "HTTP"
+      port = 8080
+    interval            = 30
+  }
+
 }
 
 resource "aws_alb_target_group_attachment" "shiny_server" {

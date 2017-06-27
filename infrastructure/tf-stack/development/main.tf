@@ -38,7 +38,7 @@ variable "azs" {
 
 variable "alb_arn" {
   type = "string"
-  default = "arn:aws:elasticloadbalancing:us-west-2:811289587868:loadbalancer/app/dev-alb-tf/abd5ab0d551e2b0d"
+  default = "arn:aws:elasticloadbalancing:us-west-2:811289587868:loadbalancer/app/dev-boston/98b7ff3b78ab45ff"
 }
 
 
