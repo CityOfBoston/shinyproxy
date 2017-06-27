@@ -8,3 +8,5 @@
 .terraform/
 
 .idea/
+infrastructure/tf-stack/development/terraform.tfstate.*.backup
+infrastructure/tf-stack/development/terraform.tfstate.*.backup
