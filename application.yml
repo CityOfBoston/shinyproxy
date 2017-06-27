@@ -13,11 +13,10 @@ shiny:
     - name: bfd_analyst
       password: test_fires
       groups: scientists
-    - name: imagine-boston
     docker:
       cert-path: /home/none
       url: http://localhost:2375
-      host: 127.0.0.1
+      host: 127.0.0.1/shiny
       port-range-start: 20000
   apps:
   - name: bfd_response_times
@@ -32,7 +31,6 @@ shiny:
     description: Metrics related to the Imagine Boston 2030 Action Plan
     docker-cmd: ["R", "-e shiny::runApp('/root/imagine_boston')"]
     docker-image: bostonanalytics/imagine_boston
-    groups: scientists
 
 
 logging:
