@@ -17,6 +17,7 @@ eval $(aws ecr get-login)
 # JAVA 8
 sudo apt-get install -y default-jre
 sudo apt-get install -y default-jdk
+sudo apt-get install oracle-java8-installer
 
 # Docker
 sudo apt-get install -y \

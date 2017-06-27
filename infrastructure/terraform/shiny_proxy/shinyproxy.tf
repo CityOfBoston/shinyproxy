@@ -147,6 +147,7 @@ resource "aws_security_group" "shinyproxy" {
 
 data "aws_alb" "front_end" {
   arn = "${var.alb_arn}"
+
 }
 
 
