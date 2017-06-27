@@ -195,7 +195,7 @@ resource  "aws_alb_target_group" "shiny_group" {
     unhealthy_threshold = 2
     timeout = 3
     protocol = "HTTP"
-    path = "/login"
+    path = "/shiny/login"
     interval  = 30
   }
 
