@@ -7,7 +7,7 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/shinyproxy.pem
 scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no application.yml ubuntu@${BASTION_PUBLIC_IP}:/tmp
 ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ubuntu@${BASTION_PUBLIC_IP} << EOF
-	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/shinyproxy
+	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:~/shinyproxy
 	ssh -i ~/.ssh/shinyproxy.pem -A -T -v -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- 'DOF'
 		echo "going to kill any shinyproxy processes before starting up a new one"
 		cd ~/shinyproxy

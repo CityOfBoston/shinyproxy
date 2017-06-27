@@ -1,7 +1,6 @@
 shiny:
   proxy:
     title: City of Boston Analytics Team
-    #logo-url: http://www.openanalytics.eu/sites/www.openanalytics.eu/themes/oa/logo.png
     logo-url: https://www.boston.gov/crispus/images/b-light.svg
     landing-page: /shiny/
     heartbeat-rate: 10000
