@@ -9,7 +9,7 @@ scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no application.yml ubuntu@
 scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no public_application.yml ubuntu@${BASTION_PUBLIC_IP}:/tmp
 ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ubuntu@${BASTION_PUBLIC_IP} << EOF
 	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no /tmp/application.yml ubuntu@${SHINY_PROXY_IP}:~/shinyproxy
-	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no /tmp/public_application.yml ubuntu@${SHINY_PROXY_IP}:~/tmp/
+	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no /tmp/public_application.yml ubuntu@${SHINY_PROXY_IP}:/tmp/
 
 	ssh -i ~/.ssh/shinyproxy.pem -A -T -v -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- 'DOF'
 		## Private Applications
@@ -20,7 +20,8 @@ ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ubuntu@${BASTION_PUB
 		nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 		# Going to copy the contents of the main shiny proxy folder and
 		# then replace the application.yml file with the public_application.yml
-		cp -T ~/shinyproxy ~/public_shinyproxy
+		rm -rf ~/public_shinyproxy
+		cp -rf ~/shinyproxy ~/public_shinyproxy
 		cp -T /tmp/public_application.yml ~/public_shinyproxy/application.yml
 		cd ~/public_shinyproxy
 		nohup /tmp/start_proxy.sh  >public_shinyproxy.out 2>&1 &
