@@ -13,7 +13,6 @@ ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ubuntu@${BASTION_PUB
 		cd ~/shinyproxy
 		echo "(jps -ml | grep shinyproxy | grep -P -o \"\\d+\\s\" | awk \"{print $1}\" | xargs kill) || echo \"nothing currently running\"; java -jar shinyproxy-0.8.7.jar" > /tmp/start_proxy.sh
 		chmod u+x /tmp/start_proxy.sh
-		#nohup /tmp/start_proxy.sh  >/dev/null 2>&1 &
 		nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 		DOF
 EOF
