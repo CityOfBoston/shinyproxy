@@ -17,8 +17,8 @@ shiny:
     - name: imagine-boston
     docker:
       cert-path: /home/none
-      url: http://localhost:2375/shiny
-      host: 127.0.0.1
+      url: http://localhost:2375
+      host: 127.0.0.1/shiny
       port-range-start: 20000
   apps:
   - name: bfd_response_times
