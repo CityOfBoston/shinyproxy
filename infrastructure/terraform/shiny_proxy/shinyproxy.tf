@@ -19,12 +19,18 @@ data  "aws_security_group" "bastion_sg" {
   }
 }
 
+data "aws_security_group" "alb_sg" {
+  filter {
+    name = "tag:Name"
+    values = ["alb_security_group"]
+  }
+}
 
 resource "aws_instance" "shinyproxy" {
   key_name = "${var.key_name}"
   instance_type = "${var.instance_type}"
   ami = "${var.ubuntu_ami_id}"
-  vpc_security_group_ids = ["${aws_default_security_group.default.id}", "${aws_security_group.shinyproxy.id}","${data.aws_security_group.bastion_sg.id}"]
+  vpc_security_group_ids = ["${aws_default_security_group.default.id}", "${aws_security_group.shinyproxy.id}","${data.aws_security_group.bastion_sg.id}","${data.aws_security_group.alb_sg.id}"]
   subnet_id = "${element(var.private_subnet_id, 1)}"
   tags {
     Name = "shinyproxyserver"
@@ -153,7 +159,7 @@ data "aws_alb" "front_end" {
 
 resource "aws_alb_listener" "shiny_listener" {
   load_balancer_arn = "${var.alb_arn}"
-  port = 8080
+  port = 80
   protocol = "HTTP"
   default_action {
     target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
@@ -163,7 +169,7 @@ resource "aws_alb_listener" "shiny_listener" {
 
 resource "aws_alb_listener_rule" "shiny" {
   listener_arn = "${aws_alb_listener.shiny_listener.arn}"
-  priority     = 100
+  priority     = 1
 
   action {
     type             = "forward"
@@ -187,10 +193,10 @@ resource  "aws_alb_target_group" "shiny_group" {
     health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    timeout             = 3
+    timeout = 3
     protocol = "HTTP"
-      port = 8080
-    interval            = 30
+    path = "/login"
+    interval  = 30
   }
 
 }
@@ -198,7 +204,6 @@ resource  "aws_alb_target_group" "shiny_group" {
 resource "aws_alb_target_group_attachment" "shiny_server" {
   target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
   target_id = "${aws_instance.shinyproxy.id}"
-  port = 8080
 }
 
 output "shiny_proxy_public_ip" {
