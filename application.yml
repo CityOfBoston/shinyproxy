@@ -44,7 +44,7 @@ shiny:
     display-name: Eviction Analysis
     description: Shows number of evictions per block group in Boston for 2016
     docker-cmd: ["R", "-e shiny::runApp('/root/evictions')"]
-    docker-image: bostonanalytics/evictions
+    docker-image: bostonanalytics/eviction_analysis
     groups: housing
 
 
