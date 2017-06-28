@@ -7,7 +7,7 @@ apps:
     bfd_response_times:
       git: git@github.com:CityOfBoston/bfd_response_times.git
       ecr_repository: 811289587868.dkr.ecr.us-west-2.amazonaws.com
-      image: imagine_boston
+      image: bfd_response_times
       tag: latest
     eviction_analysis:
       git: git@github.com:CityOfBoston/eviction_analysis.git
