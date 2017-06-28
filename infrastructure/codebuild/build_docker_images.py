@@ -57,9 +57,9 @@ def clone_app_libraries(app_properties):
             regex = re.compile(r'/.+[^.git]')
             lib_name = regex.search(git_location).group().split('/')[1]
             print(f'Going to delete {lib_name} if it exists')
-            subprocess.run(['rm', '-rf', f'{lib_name}'], cwd='./task_libraries')
+            subprocess.run(['mkdir', 'app_libraries'])
             print(f'Attempting to clone {git_location}')
-            subprocess.run(['git', 'clone', f'{git_location}'], cwd='./task_libraries')
+            subprocess.run(['git', 'clone', f'{git_location}'], cwd='./app_libraries')
 
     except Exception as err:
         msg = f'An error occurred when attempting to clone the respository {err}'
