@@ -171,3 +171,4 @@ Resources:
               - iam:CreateInstanceProfile
               - iam:GetInstanceProfile
               - iam:AddRoleToInstanceProfile
+              - iam:ListAttachedRolePolicies
