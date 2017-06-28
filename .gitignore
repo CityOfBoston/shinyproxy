@@ -9,3 +9,6 @@
 
 .idea/
 infrastructure/tf-stack/development/terraform.tfstate.*.backup
+
+
+.DS_Store

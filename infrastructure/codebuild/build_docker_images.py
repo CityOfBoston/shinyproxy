@@ -116,9 +116,6 @@ def push_app_image(app_properties):
     ecr_repository = app_properties.get('ecr_repository')
     tag = app_properties.get('tag')
     subprocess.run(['/bin/bash', '-c', 'eval $(aws ecr get-login)'])
-    # subprocess.run(['docker',
-    #                 'tag', f'{image}', f'{ecr_repository}/{image}:{tag}'
-    #                 ])
     subprocess.run(['docker',
                     'push', f'{ecr_repository}/{image}:{tag}'])
 
