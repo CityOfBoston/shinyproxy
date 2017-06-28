@@ -10,6 +10,7 @@ resource "aws_instance" "shinyproxy" {
   instance_type = "${var.instance_type}"
   ami = "${var.ubuntu_ami_id}"
   vpc_security_group_ids = ["${aws_default_security_group.default.id}", "${aws_security_group.shinyproxy.id}","${data.aws_security_group.bastion_sg.id}","${aws_security_group.alb.id}"]
+  iam_instance_profile = "${aws_iam_instance_profile.shiny_profile.id}"
   subnet_id = "${element(data.aws_subnet.private.*.id, 1)}"
   tags {
     Name = "shinyproxyserver"
