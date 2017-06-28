@@ -94,7 +94,8 @@ def build_app_image(app_properties):
         lib_name = regex.search(git_location).group().split('/')[1]
         subprocess.run(['docker', 'build',
                         '-t', f'{ecr_repository}/{image}:{tag}',
-                        '.'], cwd=f'app_library/{lib_name}')
+                       f'app_library/{lib_name}'])
+                        #'.'], cwd=f'app_library/{lib_name}')
     except Exception as err:
         print(f'Could not build docker image. The error that occurred was {err}')
 
