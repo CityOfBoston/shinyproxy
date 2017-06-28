@@ -49,7 +49,7 @@ module "shiny_proxy" {
   environment = "${var.environment}"
   aws_region = "${var.aws_region}"
   ssh_key = "${var.ssh_key}"
-  ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
+  ubuntu_ami_id = '${data.aws_ami.ubuntu_ami.id}'
   key_name = "${var.ssh_key_name}"
   vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
   azs = ["${var.azs}"]
@@ -74,6 +74,26 @@ module "ubuntu_ami" {
   storagetype = "ebs-ssd"
 }
 
+
+data "aws_ami" "ubuntu_ami" {
+  most_recent      = true
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name = "architecture"
+    values = ["x86_64"]
+  }
+  filter {
+    name = "name"
+    values = ["*hvm-ssd/ubuntu-xenial-16.04*"]
+  }
+
+  owners = ["099720109477"]
+
+}
 
 
 variable "shinyproxy_eip" {
