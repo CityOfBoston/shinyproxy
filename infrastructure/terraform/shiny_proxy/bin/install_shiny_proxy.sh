@@ -47,9 +47,9 @@ sudo su -c 'echo DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix://" >> /etc/default/
 sudo service docker restart
 
 #Downloading Shiny Proxy
-curl -LO https://github.com/openanalytics/shinyproxy/releases/download/v0.8.7/shinyproxy-0.8.7.jar
+curl -LO https://github.com/openanalytics/shinyproxy/releases/download/v0.9.2/shinyproxy-0.9.2.jar
 
-mv shinyproxy-0.8.7.jar ~/shinyproxy
+mv shinyproxy-0.9.2.jar ~/shinyproxy
 cd ~/shinyproxy
 
 
