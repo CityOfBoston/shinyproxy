@@ -19,19 +19,12 @@ data  "aws_security_group" "bastion_sg" {
   }
 }
 
-data "aws_security_group" "alb_sg" {
-  filter {
-    name = "tag:Name"
-    values = ["alb_security_group"]
-  }
-}
-
 resource "aws_instance" "shinyproxy" {
   key_name = "${var.key_name}"
   instance_type = "${var.instance_type}"
   ami = "${var.ubuntu_ami_id}"
-  vpc_security_group_ids = ["${aws_default_security_group.default.id}", "${aws_security_group.shinyproxy.id}","${data.aws_security_group.bastion_sg.id}","${data.aws_security_group.alb_sg.id}"]
-  subnet_id = "${element(var.private_subnet_id, 1)}"
+  vpc_security_group_ids = ["${aws_default_security_group.default.id}", "${aws_security_group.shinyproxy.id}","${data.aws_security_group.bastion_sg.id}","${aws_security_group.alb.id}"]
+  subnet_id = "${element(data.aws_subnet.private.*.id, 1)}"
   tags {
     Name = "shinyproxyserver"
     Environment = "${var.environment}"
@@ -183,6 +176,17 @@ resource "aws_security_group" "alb" {
 }
 
 
+data "aws_subnet" "private" {
+  vpc_id = "${var.vpc_id}"
+  count = "${length(var.azs)}"
+  availability_zone = "${element(var.azs,count.index)}"
+  tags {
+    Name = "${var.environment}-vpc-subnet-private-${element(var.azs,count.index)}"
+  }
+}
+
+
+
 data "aws_subnet" "public" {
   vpc_id = "${var.vpc_id}"
   count = "${length(var.azs)}"
@@ -210,7 +214,7 @@ resource "aws_alb" "frontend" {
 
 
 resource "aws_alb_listener" "shiny_listener" {
-  load_balancer_arn = "${var.alb_arn}"
+  load_balancer_arn = "${aws_alb.frontend.arn}"
   port = 80
   protocol = "HTTP"
   default_action {
