@@ -88,7 +88,6 @@ def add_line_download_image(app_properties, script_file='/tmp/download_images.sh
     subprocess.run(['/bin/bash', '-c', f"echo 'docker pull {ecr_repository}/{image}:{tag}' >> {script_file}"])
 
 
-
 def build_app_image(app_properties):
     """
     Will take a dictionary containing container properties for the  celery
