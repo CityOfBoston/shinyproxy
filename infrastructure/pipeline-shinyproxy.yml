@@ -168,3 +168,6 @@ Resources:
               - iam:CreateRole
               - iam:PutRolePolicy
               - iam:PassRole
+              - iam:CreateInstanceProfile
+              - iam:GetInstanceProfile
+              - iam:AddRoleToInstanceProfile
