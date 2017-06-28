@@ -70,7 +70,7 @@ def pull_app_image(app_properties):
         ecr_repository = app_properties.get('ecr_repository')
         subprocess.run(['/bin/bash', '-c', 'eval $(aws ecr get-login)'])
         subprocess.run(['docker',
-                        'push', f'{ecr_repository}/{image}:{tag}'])
+                        'pull', f'{ecr_repository}/{image}:{tag}'])
     except Exception as err:
         print(f'Could not pull docker image from ecr repository. The error that occured was {err}')
 
