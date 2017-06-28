@@ -46,3 +46,9 @@ variable "alb_arn" {
 variable "vpc_cidr" {
   type = "string"
 }
+
+
+variable "azs" {
+  type = list
+  description = "list of availablity zones"
+}
