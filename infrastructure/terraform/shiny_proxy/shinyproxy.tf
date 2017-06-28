@@ -223,21 +223,21 @@ resource "aws_alb_listener" "shiny_listener" {
   }
 }
 
-resource "aws_alb_listener_rule" "shiny" {
-  listener_arn = "${aws_alb_listener.shiny_listener.arn}"
-  priority     = 1
-
-  action {
-    type             = "forward"
-    target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
-  }
-
-
-  condition {
-    field  = "path-pattern"
-    values = ["/app/imagine-boston/*"]
-  }
-}
+//resource "aws_alb_listener_rule" "shiny" {
+//  listener_arn = "${aws_alb_listener.shiny_listener.arn}"
+//  priority     = 1
+//
+//  action {
+//    type             = "forward"
+//    target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
+//  }
+//
+//
+//  condition {
+//    field  = "path-pattern"
+//    values = ["/app/imagine-boston/*"]
+//  }
+//}
 
 
 
@@ -251,7 +251,7 @@ resource  "aws_alb_target_group" "shiny_group" {
     unhealthy_threshold = 2
     timeout = 3
     protocol = "HTTP"
-    path = "/shiny/login"
+    path = "/login"
     interval  = 30
   }
 
