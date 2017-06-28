@@ -54,10 +54,6 @@ def clone_app_libraries(app_properties):
     try:
         git_location = app_properties.get('git', None)
         if git_location:
-            regex = re.compile(r'/.+[^.git]')
-            lib_name = regex.search(git_location).group().split('/')[1]
-            print(f'Going to delete {lib_name} if it exists')
-            subprocess.run(['mkdir', 'app_libraries'])
             print(f'Attempting to clone {git_location}')
             subprocess.run(['git', 'clone', f'{git_location}'], cwd='./app_libraries')
 
@@ -126,6 +122,9 @@ def main(args):
         apps = load_app_configuration(f.read())
         print('successfully loaded app config')
         f.close()
+
+    print("Creating folder to store shiny apps locally")
+    subprocess.run(['mkdir', 'app_libraries'])
     print('Attempting to build docker images and push to ecr repo')
 
     for app, app_properties in apps.items():
