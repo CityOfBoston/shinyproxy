@@ -5,6 +5,7 @@ import argparse
 import re
 
 
+
 def load_app_configuration(document):
     """
     This function will read in the app-images.yml
@@ -88,10 +89,12 @@ def build_app_image(app_properties):
         ecr_repository = app_properties.get('ecr_repository')
         image = app_properties.get('image')
         tag = app_properties.get('tag')
+        git_location = app_properties.get('git')
+        regex = re.compile(r'/.+[^.git]')
+        lib_name = regex.search(git_location).group().split('/')[1]
         subprocess.run(['docker', 'build',
                         '-t', f'{ecr_repository}/{image}:{tag}',
-                        '.']
-                       )
+                        '.'], cwd=f'app_library/{lib_name}')
     except Exception as err:
         print(f'Could not build docker image. The error that occurred was {err}')
 
