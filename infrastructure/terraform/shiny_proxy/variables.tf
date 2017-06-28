@@ -15,11 +15,6 @@ variable "instance_type" {
 }
 
 
-variable "private_subnet_id" {
-  description = "public subnet id to launch the instance in"
-  type = "list"
-}
-
 variable "ssh_key" {
   description = "Your private key file"
 }
@@ -38,10 +33,6 @@ variable "shiny_proxy_config_file" {
 
 }
 
-variable "alb_arn" {
-  type = "string"
-}
-
 
 variable "vpc_cidr" {
   type = "string"
@@ -49,6 +40,6 @@ variable "vpc_cidr" {
 
 
 variable "azs" {
-  type = list
+  type = "list"
   description = "list of availablity zones"
 }

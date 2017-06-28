@@ -7,5 +7,5 @@ output "shiny_private_ip" {
 }
 
 output "alb_public_ip" {
-  value = "${data.aws_alb.front_end.dns_name}"
+  value = "${aws_alb.frontend.dns_name}"
 }

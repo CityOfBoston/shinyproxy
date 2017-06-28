@@ -33,7 +33,7 @@ variable "environment" {
 variable "azs" {
   description = "AWS Region Availablity Zones"
   type = "list"
-  default = ["us-west-2b"]
+  default = ["us-west-2b","us-west-2a","us-west-2c"]
 }
 
 variable "alb_arn" {
@@ -51,9 +51,8 @@ module "shiny_proxy" {
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"
   key_name = "${var.ssh_key_name}"
-  private_subnet_id = "${data.aws_subnet.private.*.id}"
-  alb_arn = "${var.alb_arn}"
   vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
+  azs = ["${var.azs}"]
 
 }
 
@@ -64,16 +63,6 @@ data "aws_vpc" "dev_vpc" {
 }
 
 
-
-
-data "aws_subnet" "private" {
-  vpc_id = "${var.vpc_id}"
-  count = "${length(var.azs)}"
-  availability_zone = "${element(var.azs,count.index)}"
-  tags {
-    Name = "${var.environment}-vpc-subnet-private-${element(var.azs,count.index)}"
-  }
-}
 
 
 module "ubuntu_ami" {
