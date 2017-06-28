@@ -1,4 +1,9 @@
 
+resource "aws_iam_instance_profile" "shiny_profile" {
+  name = "shiny-profile"
+  role = "${aws_iam_role.shiny-proxy-role.name}"
+}
+
 resource "aws_iam_role" "shiny-proxy-role" {
   name = "shiny_proxy_role"
   assume_role_policy = <<EOF
@@ -16,29 +21,35 @@ resource "aws_iam_role" "shiny-proxy-role" {
 }
 EOF
 }
-resource "aws_iam_role_policy" "ecr_access" {
-  name = "shiny-proxy-policy"
-  role = "${aws_iam_role.shiny-proxy-role.id}"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-   {
-      "Effect":"Allow",
-     "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:GetRepositoryPolicy",
-        "ecr:DescribeRepositories",
-        "ecr:ListImages",
-        "ecr:DescribeImages",
-        "ecr:BatchGetImage"
-        ],
-      "Resource":["*"]
-  }
-  ]
+
+resource "aws_iam_role_policy_attachment" "ecr_read" {
+  role = "${aws_iam_role.shiny-proxy-role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
-EOF
-}
+//resource "aws_iam_role_policy" "ecr_access" {
+//  name = "shiny-proxy-policy"
+//  role = "${aws_iam_role.shiny-proxy-role.id}"
+//  policy = <<EOF
+//{
+//  "Version": "2012-10-17",
+//  "Statement": [
+//   {
+//      "Effect":"Allow",
+//     "Action": [
+//        "ecr:GetAuthorizationToken",
+//        "ecr:BatchCheckLayerAvailability",
+//        "ecr:GetDownloadUrlForLayer",
+//        "ecr:GetRepositoryPolicy",
+//        "ecr:DescribeRepositories",
+//        "ecr:ListImages",
+//        "ecr:DescribeImages",
+//        "ecr:BatchGetImage"
+//        ],
+//      "Resource":["*"]
+//  }
+//  ]
+//}
+//
+//EOF
+//}
