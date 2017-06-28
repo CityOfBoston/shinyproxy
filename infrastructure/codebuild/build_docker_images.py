@@ -75,6 +75,18 @@ def pull_app_image(app_properties):
         print(f'Could not pull docker image from ecr repository. The error that occured was {err}')
 
 
+def clear_download_image_file(script_file='/tmp/download_images.sh'):
+    subprocess.run(['echo', '#!/usr/bin/env bash', '>', script_file])
+    subprocess.run(['chmod', 'u+x', script_file])
+
+
+def add_line_download_image(app_properties, script_file='/tmp/download_images.sh'):
+    image = app_properties.get('image')
+    tag = app_properties.get('tag')
+    ecr_repository = app_properties.get('ecr_repository')
+    subprocess.run(['echo', f'docker pull {ecr_repository}/{image}:{tag}', '>>', script_file])
+
+
 def build_app_image(app_properties):
     """
     Will take a dictionary containing container properties for the  celery
@@ -129,6 +141,9 @@ def main(args):
     print("Creating folder to store shiny apps locally")
     subprocess.run(['mkdir', 'app_libraries'])
     print('Attempting to build docker images and push to ecr repo')
+    # The ShinyProxy library is not able to pull from ecr directly so
+    # We are going to create a script that will be executed on the server
+    clear_download_image_file()
 
     for app, app_properties in apps.items():
 
@@ -145,6 +160,7 @@ def main(args):
             pull_app_image(properties)
             clone_app_libraries(properties)
             build_app_image(properties)
+            add_line_download_image(properties)
             print('successfully built image')
             if not args.build_only:
                 push_app_image(properties)
