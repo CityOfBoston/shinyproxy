@@ -150,10 +150,62 @@ resource "aws_security_group" "shinyproxy" {
 
 }
 
+resource "aws_security_group" "alb" {
+  name = "alb_security_group"
+  description = "Allow traffic from the internet into http ports"
+  vpc_id = "${var.vpc_id}"
 
-data "aws_alb" "front_end" {
-  arn = "${var.alb_arn}"
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
+  ingress {
+    from_port = 8080
+    to_port = 8080
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags {
+    Name = "alb_security_group"
+  }
+
+}
+
+
+data "aws_subnet" "public" {
+  vpc_id = "${var.vpc_id}"
+  count = "${length(var.azs)}"
+  availability_zone = "${element(var.azs, count.index)}"
+  tags {
+    "Name" = "${var.environment}-vpc-subnet-public-${element(var.azs, count.index)}"
+  }
+
+}
+
+resource "aws_alb" "frontend" {
+  name = "dev-shiny-boston"
+  internal = false
+  subnets = ["${data.aws_subnet.public.*.id}"]
+  security_groups = ["${aws_security_group.alb.id}"]
+//  access_logs {
+//    bucket = "city-of-boston"
+//    prefix = "logs/alb/dev-boston"
+//    enabled = false
+//  }
+  tags {
+    Environment = "development"
+  }
 }
 
 
@@ -179,7 +231,7 @@ resource "aws_alb_listener_rule" "shiny" {
 
   condition {
     field  = "path-pattern"
-    values = ["/shiny/*"]
+    values = ["/app/imagine-boston/*"]
   }
 }
 
@@ -205,6 +257,8 @@ resource "aws_alb_target_group_attachment" "shiny_server" {
   target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
   target_id = "${aws_instance.shinyproxy.id}"
 }
+
+
 
 output "shiny_proxy_public_ip" {
   value = "${aws_instance.shinyproxy.public_ip}"
