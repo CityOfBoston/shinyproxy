@@ -76,7 +76,8 @@ def pull_app_image(app_properties):
 
 
 def clear_download_image_file(script_file='/tmp/download_images.sh'):
-    subprocess.run(['echo', '#!/usr/bin/env bash', '>', script_file])
+    #subprocess.run( ['touch', script_file])
+    subprocess.run(['/bin/bash', '-c', f"echo '#!/usr/bin/env bash' > {script_file}"])
     subprocess.run(['chmod', 'u+x', script_file])
 
 
@@ -84,7 +85,8 @@ def add_line_download_image(app_properties, script_file='/tmp/download_images.sh
     image = app_properties.get('image')
     tag = app_properties.get('tag')
     ecr_repository = app_properties.get('ecr_repository')
-    subprocess.run(['echo', f'docker pull {ecr_repository}/{image}:{tag}', '>>', script_file])
+    subprocess.run(['/bin/bash', '-c', f"echo 'docker pull {ecr_repository}/{image}:{tag}' >> {script_file}"])
+
 
 
 def build_app_image(app_properties):
