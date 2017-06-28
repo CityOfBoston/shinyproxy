@@ -1,6 +1,6 @@
 
 resource "aws_alb" "frontend" {
-  name = "dev-shiny-boston"
+  name = "${var.environment}-shiny-boston"
   internal = false
   subnets = ["${data.aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.alb.id}"]
