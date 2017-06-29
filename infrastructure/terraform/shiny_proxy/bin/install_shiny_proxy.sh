@@ -8,7 +8,7 @@ DOCKER_VERSION=17.06.0~ce-0~ubuntu
 
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get update -y
-sudo apt-get install -y python-pip3
+sudo apt-get install -y python3-pip
 pip3 upgrade awscli
 
 eval $(aws ecr get-login --no-include-email)

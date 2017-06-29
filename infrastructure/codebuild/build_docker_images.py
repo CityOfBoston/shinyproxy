@@ -59,7 +59,7 @@ def clone_app_libraries(app_properties):
             subprocess.run(['git', 'clone', f'{git_location}'], cwd='./app_libraries')
 
     except Exception as err:
-        msg = f'An error occurred when attempting to clone the respository {err}'
+        msg = f'An error occurred when attempting to clone the repository {err}'
         raise Exception(msg)
 
 
