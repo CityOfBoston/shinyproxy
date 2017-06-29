@@ -7,8 +7,8 @@
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
 sudo apt-get update -y
-sudo apt-get install -y awscli
-
+sudo apt-get install -y python-pip3
+pip3 upgrade awscli
 
 eval $(aws ecr get-login)
 

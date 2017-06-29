@@ -50,6 +50,7 @@ module "shiny_proxy" {
   aws_region = "${var.aws_region}"
   ssh_key = "${var.ssh_key}"
   ubuntu_ami_id = "${data.aws_ami.ubuntu_ami.id}"
+
   key_name = "${var.ssh_key_name}"
   vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
   azs = ["${var.azs}"]
@@ -88,10 +89,11 @@ data "aws_ami" "ubuntu_ami" {
   }
   filter {
     name = "name"
-    values = ["*hvm-ssd/ubuntu-xenial-16.04*"]
+    values = ["*hvm-ssd/ubuntu-xenial*"]
   }
 
   owners = ["099720109477"]
+
 
 }
 
