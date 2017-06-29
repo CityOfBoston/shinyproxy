@@ -75,6 +75,17 @@ def pull_app_image(app_properties):
         print(f'Could not pull docker image from ecr repository. The error that occured was {err}')
 
 
+def does_image_exist_locally(app_properties):
+    image = app_properties.get('image')
+    tag = app_properties.get('tag')
+    ecr_repository = app_properties.get('ecr_repository')
+    available = subprocess.run(['docker', 'inspect', '--type', 'image', f'{ecr_repository}/{image}:{tag}'])
+    if available is 1:
+        return False
+    else:
+        return True
+
+
 def clear_download_image_file(script_file='/tmp/download_images.sh'):
     subprocess.run(['/bin/bash', '-c', f"echo '#!/usr/bin/env bash' > {script_file}"])
     subprocess.run(['chmod', 'u+x', script_file])
@@ -158,9 +169,13 @@ def main(args):
             print(f'name:{name}')
             print(f'prop:{properties}')
             pull_app_image(properties)
-            clone_app_libraries(properties)
-            build_app_image(properties)
-            add_line_download_image(properties)
+            if does_image_exist_locally(properties):
+                print(f'This image:tag exists on the ecr repository. Will skip build process')
+                add_line_download_image(properties)
+            else:
+                clone_app_libraries(properties)
+                build_app_image(properties)
+                add_line_download_image(properties)
             print('successfully built image')
             if not args.build_only:
                 push_app_image(properties)
