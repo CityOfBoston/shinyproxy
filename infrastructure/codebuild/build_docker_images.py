@@ -76,7 +76,6 @@ def pull_app_image(app_properties):
 
 
 def clear_download_image_file(script_file='/tmp/download_images.sh'):
-    #subprocess.run( ['touch', script_file])
     subprocess.run(['/bin/bash', '-c', f"echo '#!/usr/bin/env bash' > {script_file}"])
     subprocess.run(['chmod', 'u+x', script_file])
 
