@@ -4,7 +4,7 @@
 #https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 
-DOCKER_VERSION=17.06.0~ce-0~ubuntu-xenial
+#DOCKER_VERSION=17.06.0~ce-0~ubuntu-xenial
 
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get update -y
@@ -36,7 +36,9 @@ sudo add-apt-repository \
    stable"
 
 sudo apt-get update
-sudo apt-get install -y docker-ce=${DOCKER_VERSION}
+echo "List all available versions"
+sudo apt-cache madison docker-ce
+sudo apt-get install -y docker-ce #=${DOCKER_VERSION}
 
 sudo docker run hello-world
 # Install Shiny Proxy
