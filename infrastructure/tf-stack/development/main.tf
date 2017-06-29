@@ -49,7 +49,7 @@ module "shiny_proxy" {
   environment = "${var.environment}"
   aws_region = "${var.aws_region}"
   ssh_key = "${var.ssh_key}"
-  ubuntu_ami_id = '${data.aws_ami.ubuntu_ami.id}'
+  ubuntu_ami_id = "${data.aws_ami.ubuntu_ami.id}"
   key_name = "${var.ssh_key_name}"
   vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
   azs = ["${var.azs}"]
