@@ -4,7 +4,7 @@
 #https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 
-DOCKER_VERSION=17.06
+DOCKER_VERSION=17.06.0~ce-0~ubuntu-xenial
 
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get update -y
