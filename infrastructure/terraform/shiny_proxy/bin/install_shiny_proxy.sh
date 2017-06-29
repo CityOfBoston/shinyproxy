@@ -4,8 +4,9 @@
 #https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 
-DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+DOCKER_VERSION=17.06.0
 
+DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get update -y
 sudo apt-get install -y python-pip3
 pip3 upgrade awscli
@@ -35,7 +36,7 @@ sudo add-apt-repository \
    stable"
 
 sudo apt-get update
-sudo apt-get install -y docker-ce
+sudo apt-get install -y docker-ce=${DOCKER_VERSION}
 
 sudo docker run hello-world
 # Install Shiny Proxy
