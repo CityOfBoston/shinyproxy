@@ -4,7 +4,7 @@
 #https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 
-DOCKER_VERSION=17.06.0
+DOCKER_VERSION=17.06
 
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get update -y
@@ -18,7 +18,7 @@ eval $(aws ecr get-login)
 # JAVA 8
 sudo apt-get install -y default-jre
 sudo apt-get install -y default-jdk
-sudo apt-get install oracle-java8-installer
+#sudo apt-get install oracle-java8-installer
 
 # Docker
 sudo apt-get install -y \
