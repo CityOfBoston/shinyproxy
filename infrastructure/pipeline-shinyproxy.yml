@@ -57,7 +57,7 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      RoleArn: !GetAtt PipelineRole.Arn
+      RoleArn: arn:aws:iam::811289587868:role/codepipeline-role
       ArtifactStore:
         Location:
           Ref:
@@ -97,19 +97,6 @@ Resources:
             Configuration:
                 ProjectName: !Ref DeployShinyProxyBuild
             RunOrder: 1
-  PipelineRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: Allow
-          Principal:
-            Service: codepipeline.amazonaws.com
-          Action: sts:AssumeRole
-      Path: /
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AdministratorAccess
 
   DeployShinyProxyBuild:
     Type: AWS::CodeBuild::Project
@@ -128,47 +115,6 @@ Resources:
           - Name: TerraformVersion
             Value: !Sub ${TerraformVersion}
       Name: !Sub ${AWS::StackName}-InvokeTerraformBuild
-      ServiceRole: !Ref DeployShinyProxyBuildRole
+      ServiceRole: arn:aws:iam::811289587868:role/shinyapp-deploy-role
       Source:
         Type: CODEPIPELINE
-
-  DeployShinyProxyBuildRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: Allow  
-          Principal:
-            Service: 
-              - codebuild.amazonaws.com
-          Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/PowerUserAccess
-      Policies:
-        - PolicyName: deploy-key-access
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Effect: Allow
-              Resource: arn:aws:s3:::test-boston-deploy
-              Action:
-                - s3:GetObject
-                - s3:ListBucket
-                - s3:GetObjectVersion
-        - PolicyName: pipeline-assume-iam-role
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Effect: Allow
-              Resource: '*'
-              Action: 
-              - iam:GetRole
-              - iam:GetRolePolicy
-              - iam:CreateRole
-              - iam:PutRolePolicy
-              - iam:PassRole
-              - iam:CreateInstanceProfile
-              - iam:GetInstanceProfile
-              - iam:AddRoleToInstanceProfile
-              - iam:ListAttachedRolePolicies
