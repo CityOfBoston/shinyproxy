@@ -4,14 +4,14 @@
 #https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold"  install grub-pc
 
-#DOCKER_VERSION=17.06.0~ce-0~ubuntu-xenial
+DOCKER_VERSION=17.06.0~ce-0~ubuntu
 
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get update -y
 sudo apt-get install -y python-pip3
 pip3 upgrade awscli
 
-eval $(aws ecr get-login)
+eval $(aws ecr get-login --no-include-email)
 
 ## Installing Perquisites
 
@@ -38,7 +38,7 @@ sudo add-apt-repository \
 sudo apt-get update
 echo "List all available versions"
 sudo apt-cache madison docker-ce
-sudo apt-get install -y docker-ce #=${DOCKER_VERSION}
+sudo apt-get install -y docker-ce=${DOCKER_VERSION}
 
 sudo docker run hello-world
 # Install Shiny Proxy
