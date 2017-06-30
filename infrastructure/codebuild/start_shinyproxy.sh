@@ -12,7 +12,10 @@ ssh -T -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no ubuntu@${BASTION_PUB
 	sudo scp -i ~/.ssh/shinyproxy.pem -o StrictHostKeyChecking=no /tmp/download_images.sh ubuntu@${SHINY_PROXY_IP}:/tmp/
 	ssh -i ~/.ssh/shinyproxy.pem -A -T -v -o StrictHostKeyChecking=no ubuntu@${SHINY_PROXY_IP} <<- 'DOF'
 		# Going to pull images from ec2 repository manually
-		eval $(aws ecr get-login --no-include-email --region=us-west-2)
+		echo "#!/usr/bin/env bash" > /tmp/login_ecr.sh
+		echo $(aws ecr get-login --no-include-email --region=us-west-2) >> /tmp/login_ecr.sh
+		chmod u+x /tmp/login_ecr.sh
+		sudo /tmp/login_ecr.sh
 		sudo /tmp/download_images.sh
 		echo "going to kill any shinyproxy processes before starting up a new one"
 		cd ~/shinyproxy
