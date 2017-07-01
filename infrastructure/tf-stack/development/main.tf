@@ -55,6 +55,8 @@ module "shiny_proxy" {
   vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
   azs = ["${var.azs}"]
 
+  shiny_app_ecr = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
+  application_file = "${var.shiny_proxy_config_file}"
 }
 
 
