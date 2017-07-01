@@ -38,6 +38,15 @@ variable "vpc_cidr" {
   type = "string"
 }
 
+variable "application_file" {
+
+}
+
+
+variable "shiny_app_ecr" {
+  type = "string"
+  description = "Shiny App Docker Images to pull from ECR Repository"
+}
 
 variable "azs" {
   type = "list"

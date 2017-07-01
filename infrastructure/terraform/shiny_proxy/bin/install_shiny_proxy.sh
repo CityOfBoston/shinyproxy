@@ -41,8 +41,8 @@ sudo apt-cache madison docker-ce
 sudo apt-get install -y docker-ce=${DOCKER_VERSION}
 
 sudo docker run hello-world
+
 # Install Shiny Proxy
-#sudo su -
 sudo su -c 'echo  #Use DOCKER_OPTS to modify the daemon startup options. >> /etc/default/docker'
 sudo su -c 'echo DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix://" >> /etc/default/docker'
 
