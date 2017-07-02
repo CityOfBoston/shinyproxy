@@ -90,7 +90,7 @@ mkdir -p /home/ubuntu/shinyproxy
 mv shinyproxy-${SHINY_PROXY_VERSION}.jar /home/ubuntu/shinyproxy/
 cd /home/ubuntu/shinyproxy
 
-aws s3  cp  s3://${BUCKET_NAME}/${SHINY_APP_CONFIG_FILE}/ /home/ubuntu/shinyproxy/application.yml --region ${AWS_REGION}
+aws s3  cp  s3://${BUCKET_NAME}${SHINY_APP_CONFIG_FILE} /home/ubuntu/shinyproxy/application.yml --region ${AWS_REGION}
 
 
 mv /tmp/docker_config /lib/systemd/system/docker.service
