@@ -26,3 +26,9 @@ resource "aws_iam_role_policy_attachment" "ecr_read" {
   role = "${aws_iam_role.shiny-proxy-role.name}"
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
+
+
+resource "aws_iam_role_policy_attachment" "s3_read" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  role = "${aws_iam_role.shiny-proxy-role.name}"
+}
