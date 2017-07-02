@@ -91,7 +91,7 @@ resource "aws_s3_bucket" "tmp" {
 resource "aws_s3_bucket_object" "application_yml" {
 
   bucket = "${aws_s3_bucket.tmp.id}"
-  key = "/apps/${var.environment}/shinyproxy"
+  key = "/apps/${var.environment}/shinyproxy/application.yml"
   source = "${var.application_file}"
 }
 
@@ -101,6 +101,10 @@ data "template_file" "user_data" {
   vars {
     DOCKER_VERSION="17.06.0~ce-0~ubuntu"
     ecr_repositories = "${var.shiny_app_ecr}"
+    SHINY_PROXY_VERSION = "0.9.2"
+    BUCKET_NAME = "${aws_s3_bucket.tmp.id}"
+    SHINY_APP_CONFIG_FILE = "${aws_s3_bucket_object.application_yml.id}"
+    AWS_REGION = "${var.aws_region}"
   }
 
 }
