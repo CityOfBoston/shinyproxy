@@ -3,7 +3,7 @@ shiny:
     title: City of Boston Analytics Team
     logo-url: https://www.boston.gov/crispus/images/b-light.svg
     landing-page: /
-    heartbeat-rate: 100000
+    heartbeat-rate: 10000
     heartbeat-timeout: 6000000
     port: 8080
     authentication: simple
