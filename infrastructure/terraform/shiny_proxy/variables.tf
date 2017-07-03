@@ -52,3 +52,11 @@ variable "azs" {
   type = "list"
   description = "list of availablity zones"
 }
+
+
+variable "autoscaling_max_size" {
+  description = "the max number of instances in this auto scaling group"
+}
+variable "log_bucket" {
+  default = "test-shiny-proxy"
+}

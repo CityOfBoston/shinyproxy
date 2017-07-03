@@ -57,6 +57,7 @@ module "shiny_proxy" {
 
   shiny_app_ecr = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
   application_file = "${var.shiny_proxy_config_file}"
+  autoscaling_max_size = 2
 }
 
 
@@ -122,6 +123,6 @@ output "bastion_public_ip" {
   value = "${module.shiny_proxy.bastion_ip}"
 }
 
-output "shiny_proxy_private_ip" {
-  value = "${module.shiny_proxy.shiny_private_ip}"
-}
+//output "shiny_proxy_private_ip" {
+//  value = "${module.shiny_proxy.shiny_private_ip}"
+//}
