@@ -17,7 +17,7 @@ variable "ssh_key_name" {
 
 variable "shiny_proxy_config_file" {
   type = "string"
-  default ="../../../application.yml"
+  default ="../../../public_application.yml"
 }
 
 variable "vpc_id" {
@@ -57,6 +57,7 @@ module "shiny_proxy" {
 
   shiny_app_ecr = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
   application_file = "${var.shiny_proxy_config_file}"
+  health_check_path = "/"
   autoscaling_max_size = 2
 }
 
