@@ -4,14 +4,16 @@ resource "aws_alb" "frontend" {
   internal = false
   subnets = ["${data.aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.alb.id}"]
+
 //  access_logs {
-//    bucket = "city-of-boston"
+//    bucket = "${var.log_bucket}"
 //    prefix = "logs/alb/dev-boston"
-//    enabled = false
+//    enabled = true
 //  }
   tags {
     Environment = "development"
   }
+
 }
 
 
@@ -25,21 +27,6 @@ resource "aws_alb_listener" "shiny_listener" {
   }
 }
 
-//resource "aws_alb_listener_rule" "shiny" {
-//  listener_arn = "${aws_alb_listener.shiny_listener.arn}"
-//  priority     = 1
-//
-//  action {
-//    type             = "forward"
-//    target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
-//  }
-//
-//
-//  condition {
-//    field  = "path-pattern"
-//    values = ["/app/imagine-boston/*"]
-//  }
-//}
 
 
 
@@ -59,9 +46,8 @@ resource  "aws_alb_target_group" "shiny_group" {
 
 }
 
-resource "aws_alb_target_group_attachment" "shiny_server" {
-  target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
-  target_id = "${aws_instance.shinyproxy.id}"
-}
-
-
+//resource "aws_alb_target_group_attachment" "shiny_server" {
+//  target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
+//  target_id = "${aws_instance.shinyproxy.id}"
+//}
+//
