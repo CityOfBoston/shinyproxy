@@ -130,6 +130,6 @@ chmod u+x /home/ubuntu/pull_images.sh
 # Add pulling images to cron
 if [ -n "${update_image_frequency}" ]; then
     croncmd = "/home/ubuntu/pull_images.sh"
-    cronjob = "${update_image_frequency} $croncmd"
-    ( crontab -u ubuntu -l | grep -v "$croncmd"; echo "$cronjob" ) | crontab -u ubuntu -
+    cronjob = "${update_image_frequency} $${croncmd}"
+    ( crontab -u ubuntu -l | grep -v "$${croncmd}"; echo "$${cronjob}" ) | crontab -u ubuntu -
 fi
