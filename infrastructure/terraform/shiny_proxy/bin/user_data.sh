@@ -84,11 +84,16 @@ apt-get install -y docker-ce=${DOCKER_VERSION}
 
 docker run hello-world
 
+sudo groupadd docker
+sudo usermod -aG docker ubuntu
+
 # Install Shiny Proxy
 echo  '#Use DOCKER_OPTS to modify the daemon startup options. >> /etc/default/docker'
 echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix://" >> /etc/default/docker'
 
 service docker restart
+
+
 
 #Downloading Shiny Proxy
 #curl -LO https://github.com/openanalytics/shinyproxy/releases/download/v${SHINY_PROXY_VERSION}/shinyproxy-${SHINY_PROXY_VERSION}.jar
