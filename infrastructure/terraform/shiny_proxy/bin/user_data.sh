@@ -49,7 +49,6 @@ DOCKER_VERSION=17.06.0~ce-0~ubuntu
 SHINY_PROXY_VERSION=0.9.2
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 apt-get update -y
-apt-get upgrade -y
 apt-get install -y python3-pip
 pip3 install awscli
 
