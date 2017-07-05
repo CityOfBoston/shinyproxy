@@ -3,14 +3,10 @@ provider "aws" {
 }
 
 
-resource "aws_s3_bucket" "tmp" {
-  bucket = "test-shiny-proxy"
-  acl = "private"
-}
 
 resource "aws_s3_bucket_object" "application_yml" {
 
-  bucket = "${aws_s3_bucket.tmp.id}"
+  bucket = "${var.app_bucket}"
   key = "/apps/${var.environment}/shinyproxy/application.yml"
   source = "${var.application_file}"
   etag = "${md5(var.application_file)}"
@@ -23,7 +19,7 @@ data "template_file" "user_data" {
     DOCKER_VERSION="17.06.0~ce-0~ubuntu"
     ecr_repositories = "${var.shiny_app_ecr}"
     SHINY_PROXY_VERSION = "0.9.3"
-    BUCKET_NAME = "${aws_s3_bucket.tmp.id}"
+    BUCKET_NAME = "${var.app_bucket}"
     SHINY_APP_CONFIG_FILE = "${aws_s3_bucket_object.application_yml.id}"
     AWS_REGION = "${var.aws_region}"
   }
@@ -76,7 +72,7 @@ resource "aws_autoscaling_group" "autoshinygroup" {
 
   tag {
     key = "Name"
-    value = "shiny-server-ag"
+    value = "shiny-server-ag-${aws_launch_configuration.autoshiny.count}"
     propagate_at_launch = true
   }
 }

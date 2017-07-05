@@ -32,16 +32,7 @@ terraform {
   }
 }
 
-output "shiny_proxy_ip" {
-  value = "${module.shiny_proxy_stack.shiny_proxy_ip}"
-}
 
-
-
-
-variable "shinyproxy_eip" {
-  default = "52.54.86.36"
-}
 
 variable "ssh_key" {
   description = "location of ssh key for instance"

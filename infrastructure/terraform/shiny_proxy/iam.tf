@@ -32,3 +32,4 @@ resource "aws_iam_role_policy_attachment" "s3_read" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
   role = "${aws_iam_role.shiny-proxy-role.name}"
 }
+
