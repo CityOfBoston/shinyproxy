@@ -82,10 +82,9 @@ echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix://" >> /etc/default/docker'
 
 service docker restart
 
-
 #Downloading Shiny Proxy
-curl -LO https://github.com/openanalytics/shinyproxy/releases/download/v${SHINY_PROXY_VERSION}/shinyproxy-${SHINY_PROXY_VERSION}.jar
-
+#curl -LO https://github.com/openanalytics/shinyproxy/releases/download/v${SHINY_PROXY_VERSION}/shinyproxy-${SHINY_PROXY_VERSION}.jar
+curl -LO https://www.shinyproxy.io/downloads/shinyproxy-${SHINY_PROXY_VERSION}.jar
 mkdir -p /home/ubuntu/shinyproxy
 mv shinyproxy-${SHINY_PROXY_VERSION}.jar /home/ubuntu/shinyproxy/
 cd /home/ubuntu/shinyproxy
@@ -106,7 +105,7 @@ do
 
 done
 
-echo "java -jar shinyproxy-${SHINY_PROXY_VERSION}.jar" > /tmp/start_proxy.sh
+echo "java -jar shinyproxy-${SHINY_PROXY_VERSION}.jar --server.session.timeout=300" > /tmp/start_proxy.sh
 chmod u+x /tmp/start_proxy.sh
 nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 EOF
