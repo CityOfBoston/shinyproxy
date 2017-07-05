@@ -34,6 +34,13 @@ WantedBy=multi-user.target
 
 EOF
 
+cat <<"EOF" >/home/ubuntu/pull_images.sh
+for image in $(echo ${ecr_repositories} | sed "s/,/ /g")
+do
+    docker pull "$image"
+
+done
+EOF
 
 cat <<"EOF" > /tmp/bootstrap_shiny.sh
 #!/bin/bash
@@ -109,5 +116,14 @@ echo "java -jar shinyproxy-${SHINY_PROXY_VERSION}.jar --server.session.timeout=3
 chmod u+x /tmp/start_proxy.sh
 nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 EOF
+
 chmod u+x /tmp/bootstrap_shiny.sh
+chmod u+x /home/ubuntu/pull_images.sh
 /tmp/bootstrap_shiny.sh
+
+# Add pulling images to cron
+if [-n "$update_image_frequency"]; then
+    croncmd = "/home/ubuntu/pull_images.sh"
+    cronjob = "$update_image_frequeny $croncmd"
+    ( crontab -u ubuntu -l | grep -v "$croncmd"; echo "$cronjob" ) | crontab -u ubuntu -
+fi

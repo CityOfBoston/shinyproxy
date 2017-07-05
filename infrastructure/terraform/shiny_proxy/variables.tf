@@ -48,6 +48,10 @@ variable "azs" {
 }
 
 
+variable "update_image_frequency" {
+
+}
+
 variable "autoscaling_max_size" {
   description = "the max number of instances in this auto scaling group"
 }

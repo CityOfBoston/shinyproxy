@@ -31,6 +31,7 @@ data "template_file" "public_user_data" {
     BUCKET_NAME = "${var.app_bucket}"
     SHINY_APP_CONFIG_FILE = "${aws_s3_bucket_object.public_application_yml.id}"
     AWS_REGION = "${var.aws_region}"
+    update_image_frequency = "${var.image_update_frequency}"
   }
 
 }
@@ -46,6 +47,7 @@ data "template_file" "private_user_data" {
     BUCKET_NAME = "${var.app_bucket}"
     SHINY_APP_CONFIG_FILE = "${aws_s3_bucket_object.private_application_yml.id}"
     AWS_REGION = "${var.aws_region}"
+    update_image_frequency = "${var.image_update_frequency}"
   }
 
 }
