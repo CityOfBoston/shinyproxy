@@ -52,6 +52,7 @@ module "shiny_proxy" {
   app_bucket = "${aws_s3_bucket.tmp.bucket}"
   instance_type = "${var.instance_type}"
   load_balancer_timeout = 7200
+  update_image_frequency = "*/10 * * * *"
 }
 
 
