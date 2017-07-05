@@ -37,10 +37,6 @@ variable "private_application_file" {
 
 }
 
-variable "health_check_path" {
-  description = "the path that the alb will check to monitor health of instance"
-}
-
 variable "shiny_app_ecr" {
   type = "string"
   description = "Shiny App Docker Images to pull from ECR Repository"
