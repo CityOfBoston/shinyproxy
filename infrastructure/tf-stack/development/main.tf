@@ -11,6 +11,30 @@ variable "aws_region" {
 
 
 
+variable "shiny_app_docker_images" {
+  type = "string"
+  description = "A comma seperated string of docker images to download onto the server "
+  default = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
+}
+
+variable "public_application_file" {
+  type = "string"
+  description = "The shiny proxy application file that contains applications that are to be publically available"
+  default = "../../../public_application.yml"
+}
+
+variable "private_application_file" {
+  type = "string"
+  description = "The shiny proxy application file that contains applications that are to be private"
+  default = "../../../application.yml"
+}
+
+variable "instance_type" {
+  type = "string"
+  description = "The type of ec2 instance to use in autoscaling groups"
+  default = "m4.large"
+}
+
 
 module "shiny_proxy" {
   source = "../../terraform/shiny_proxy"
@@ -21,13 +45,12 @@ module "shiny_proxy" {
   key_name = "shinyproxy"
   azs = ["us-west-2b", "us-west-2a", "us-west-2c"]
 
-  shiny_app_ecr = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
-  public_application_file = "../../../public_application.yml"
-  private_application_file = "../../../application.yml"
-  health_check_path = "/"
+  shiny_app_ecr = "${var.shiny_app_docker_images}"
+  public_application_file = "${var.public_application_file}"
+  private_application_file = "${var.private_application_file}"
   autoscaling_max_size = 2
   app_bucket = "${aws_s3_bucket.tmp.bucket}"
-  instance_type = "m4.large"
+  instance_type = "${var.instance_type}"
   load_balancer_timeout = 7200
 }
 
