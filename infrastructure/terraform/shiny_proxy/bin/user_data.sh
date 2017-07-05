@@ -123,8 +123,8 @@ chmod u+x /home/ubuntu/pull_images.sh
 /tmp/bootstrap_shiny.sh
 
 # Add pulling images to cron
-if [-n "$update_image_frequency"]; then
+if [-n "${update_image_frequency}"]; then
     croncmd = "/home/ubuntu/pull_images.sh"
-    cronjob = "$update_image_frequeny $croncmd"
+    cronjob = "${update_image_frequeny} $croncmd"
     ( crontab -u ubuntu -l | grep -v "$croncmd"; echo "$cronjob" ) | crontab -u ubuntu -
 fi
