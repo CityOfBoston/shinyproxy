@@ -19,14 +19,16 @@ module "shiny_proxy" {
   ubuntu_ami_id = "${data.aws_ami.ubuntu_ami.id}"
   vpc_id = "vpc-ebaf588d"
   key_name = "shinyproxy"
-  azs = ["us-west-2b","us-west-2a","us-west-2c"]
+  azs = ["us-west-2b", "us-west-2a", "us-west-2c"]
 
   shiny_app_ecr = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
-  application_file = "../../../public_application.yml"
+  public_application_file = "../../../public_application.yml"
+  private_application_file = "../../../application.yml"
   health_check_path = "/"
   autoscaling_max_size = 2
   app_bucket = "${aws_s3_bucket.tmp.bucket}"
   instance_type = "m4.large"
+  load_balancer_timeout = 7200
 }
 
 

@@ -9,5 +9,5 @@ output "alb_dns_name" {
 
 
 output "rendered_user_data" {
-  value = "${data.template_file.user_data.rendered}"
+  value = "${data.template_file.public_user_data.rendered}"
 }

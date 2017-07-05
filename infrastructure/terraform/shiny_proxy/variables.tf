@@ -29,7 +29,11 @@ variable "load_balancer_timeout" {
   description = "The length of time that you would like idle connections to last o"
 }
 
-variable "application_file" {
+variable "public_application_file" {
+
+}
+
+variable "private_application_file" {
 
 }
 
