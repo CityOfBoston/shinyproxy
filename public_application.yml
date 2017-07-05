@@ -4,14 +4,12 @@ shiny:
     logo-url: https://www.boston.gov/crispus/images/b-light.svg
     landing-page: /
     heartbeat-rate: 10000
-    heartbeat-timeout: 60000
+    heartbeat-timeout: 6000000
     port: 8080
     authentication: none
-    admin-groups: scientists
     docker:
       cert-path: /home/none
       url: http://localhost:2375
-      host: 127.0.0.1
       port-range-start: 20000
   apps:
   - name: imagine-boston
@@ -24,4 +22,3 @@ shiny:
 logging:
   file:
     shinyproxy.log
-

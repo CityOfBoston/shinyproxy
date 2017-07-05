@@ -4,6 +4,7 @@ resource "aws_alb" "frontend" {
   internal = false
   subnets = ["${data.aws_subnet.public.*.id}"]
   security_groups = ["${aws_security_group.alb.id}"]
+  idle_timeout = 3600
 
 //  access_logs {
 //    bucket = "${var.log_bucket}"
@@ -30,6 +31,7 @@ resource "aws_alb_listener" "shiny_listener" {
 
 
 
+
 resource  "aws_alb_target_group" "shiny_group" {
   port = 8080
   protocol = "HTTP"
@@ -40,15 +42,8 @@ resource  "aws_alb_target_group" "shiny_group" {
     unhealthy_threshold = 2
     timeout = 3
     protocol = "HTTP"
-    #path = "/login"
-      path = "${var.health_check_path}"
+    path = "${var.health_check_path}"
     interval  = 30
   }
 
 }
-
-//resource "aws_alb_target_group_attachment" "shiny_server" {
-//  target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
-//  target_id = "${aws_instance.shinyproxy.id}"
-//}
-//
