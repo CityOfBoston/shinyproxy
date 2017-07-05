@@ -49,6 +49,7 @@ DOCKER_VERSION=17.06.0~ce-0~ubuntu
 SHINY_PROXY_VERSION=0.9.2
 DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 apt-get update -y
+apt-get upgrade -y
 apt-get install -y python3-pip
 pip3 install awscli
 
@@ -128,7 +129,7 @@ chmod u+x /home/ubuntu/pull_images.sh
 /tmp/bootstrap_shiny.sh
 
 # Add pulling images to cron
-if [-n "${update_image_frequency}"]; then
+if [ -n "${update_image_frequency}" ]; then
     croncmd = "/home/ubuntu/pull_images.sh"
     cronjob = "${update_image_frequency} $croncmd"
     ( crontab -u ubuntu -l | grep -v "$croncmd"; echo "$cronjob" ) | crontab -u ubuntu -
