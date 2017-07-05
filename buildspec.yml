@@ -3,8 +3,8 @@ phases:
   install:
     commands:
       - apt-get -y update && apt-get -y upgrade
-      - apt-get -y install ssh
-      - apt-get -y install openssh-client
+      #- apt-get -y install ssh
+      #- apt-get -y install openssh-client
       - apt-get -y install jq
       - apt-get -y install software-properties-common
       - add-apt-repository -y ppa:jonathonf/python-3.6
@@ -25,6 +25,7 @@ phases:
       - git lfs install
 
       - infrastructure/codebuild/setup_github_access.sh
+
 
 
   build:
