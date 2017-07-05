@@ -35,6 +35,7 @@ WantedBy=multi-user.target
 EOF
 
 cat <<"EOF" >/home/ubuntu/pull_images.sh
+#!/bin/bash
 for image in $(echo ${ecr_repositories} | sed "s/,/ /g")
 do
     docker pull "$image"
