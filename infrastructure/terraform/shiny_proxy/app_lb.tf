@@ -18,31 +18,72 @@ resource "aws_alb" "frontend" {
 }
 
 
-resource "aws_alb_listener" "shiny_listener" {
+resource "aws_alb_listener" "public_shiny_listener" {
   load_balancer_arn = "${aws_alb.frontend.arn}"
   port = 80
   protocol = "HTTP"
   default_action {
-    target_group_arn = "${aws_alb_target_group.shiny_group.arn}"
+    target_group_arn = "${aws_alb_target_group.public_shiny_tg.arn}"
     type = "forward"
   }
 }
 
 
 
+resource "aws_alb_listener" "private_shiny_listener" {
+  load_balancer_arn = "${aws_alb.frontend.arn}"
+  port = 3838
+  protocol = "HTTP"
+  default_action {
+    target_group_arn = "${aws_alb_target_group.private_shiny_tg.arn}"
+    type = "forward"
+  }
+}
 
 
-resource  "aws_alb_target_group" "shiny_group" {
+
+resource  "aws_alb_target_group" "private_shiny_tg" {
   port = 8080
   protocol = "HTTP"
   vpc_id = "${var.vpc_id}"
+
+    stickiness {
+      type = "lb_cookie"
+      cookie_duration = 86400
+      enabled = true
+    }
 
     health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout = 3
     protocol = "HTTP"
-    path = "${var.health_check_path}"
+    path = "/private/login"
+    interval  = 30
+  }
+
+}
+
+
+
+
+resource  "aws_alb_target_group" "public_shiny_tg" {
+  port = 8080
+  protocol = "HTTP"
+  vpc_id = "${var.vpc_id}"
+
+     stickiness {
+      type = "lb_cookie"
+      cookie_duration = 86400
+      enabled = true
+    }
+
+    health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout = 3
+    protocol = "HTTP"
+    path = "/public"
     interval  = 30
   }
 
