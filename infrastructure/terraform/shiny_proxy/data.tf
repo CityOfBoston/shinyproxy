@@ -13,6 +13,9 @@ data  "aws_security_group" "bastion_sg" {
   }
 }
 
+data "aws_vpc" "vpc" {
+  id = "vpc-ebaf588d"
+}
 
 
 

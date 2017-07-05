@@ -7,12 +7,12 @@ resource "aws_alb" "frontend" {
   idle_timeout = 3600
 
 //  access_logs {
-//    bucket = "${var.log_bucket}"
+//    bucket = "${var.app_bucket}"
 //    prefix = "logs/alb/dev-boston"
 //    enabled = true
 //  }
   tags {
-    Environment = "development"
+    Environment = "${var.environment}"
   }
 
 }

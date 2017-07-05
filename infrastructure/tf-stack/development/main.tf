@@ -1,79 +1,36 @@
+
+
+provider "aws" {
+  region = "${var.aws_region}"
+}
+
 variable "aws_region" {
   type = "string"
   default = "us-west-2"
 }
 
-variable "ssh_key" {
-  description = "location of ssh key for instance"
-  type = "string"
-  default = "~/.ssh/shinyproxy.pem"
-}
-
-variable "ssh_key_name" {
-  description = "Name of the AWS Keypair"
-  type = "string"
-  default = "shinyproxy"
-}
-
-variable "shiny_proxy_config_file" {
-  type = "string"
-  default ="../../../public_application.yml"
-}
-
-variable "vpc_id" {
-  type = "string"
-  default = "vpc-ebaf588d"
-}
-
-variable "environment" {
-  type = "string"
-  default = "development"
-}
-
-variable "azs" {
-  description = "AWS Region Availablity Zones"
-  type = "list"
-  default = ["us-west-2b","us-west-2a","us-west-2c"]
-}
 
 
 
 module "shiny_proxy" {
   source = "../../terraform/shiny_proxy"
-  shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
-  vpc_id = "${var.vpc_id}"
-  environment = "${var.environment}"
+  environment = "development"
   aws_region = "${var.aws_region}"
-  ssh_key = "${var.ssh_key}"
-  ubuntu_ami_id = "${module.ubuntu_ami.ami_id}"#"${data.aws_ami.ubuntu_ami.id}"
-
-  key_name = "${var.ssh_key_name}"
-  vpc_cidr = "${data.aws_vpc.dev_vpc.cidr_block}"
-  azs = ["${var.azs}"]
+  ubuntu_ami_id = "${data.aws_ami.ubuntu_ami.id}"
+  vpc_id = "vpc-ebaf588d"
+  key_name = "shinyproxy"
+  azs = ["us-west-2b","us-west-2a","us-west-2c"]
 
   shiny_app_ecr = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
-  application_file = "${var.shiny_proxy_config_file}"
+  application_file = "../../../public_application.yml"
   health_check_path = "/"
   autoscaling_max_size = 2
+  app_bucket = "${aws_s3_bucket.tmp.bucket}"
+  instance_type = "m4.large"
 }
 
 
 
-data "aws_vpc" "dev_vpc" {
-  id = "${var.vpc_id}"
-}
-
-
-
-
-module "ubuntu_ami" {
-  source = "github.com/terraform-community-modules/tf_aws_ubuntu_ami"
-  region = "${var.aws_region}"
-  distribution = "xenial"
-  architecture = "amd64"
-  virttype = "hvm"
-  storagetype = "ebs-ssd"
-}
 
 
 data "aws_ami" "ubuntu_ami" {
@@ -89,22 +46,23 @@ data "aws_ami" "ubuntu_ami" {
   }
   filter {
     name = "name"
-    values = ["*hvm-ssd/ubuntu-xenial*"]
+    values = ["*hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
   }
-
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
   owners = ["099720109477"]
 
 
 }
 
-
-variable "shinyproxy_eip" {
-  default = "34.208.232.53"
+resource "aws_s3_bucket" "tmp" {
+  bucket = "test-shiny-proxy"
+  acl = "private"
 }
 
-provider "aws" {
-  region = "${var.aws_region}"
-}
+
 
 terraform {
   required_version = "v0.9.6"
@@ -116,10 +74,3 @@ terraform {
   }
 }
 
-output "bastion_public_ip" {
-  value = "${module.shiny_proxy.bastion_ip}"
-}
-
-//output "shiny_proxy_private_ip" {
-//  value = "${module.shiny_proxy.shiny_private_ip}"
-//}
