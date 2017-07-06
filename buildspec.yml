@@ -7,6 +7,12 @@ phases:
       - apt-get -y install jq
       - chmod u+x infrastructure/codebuild/*
       - infrastructure/codebuild/install_terraform.sh
+      - apt-get install -y software-properties-common
+      - add-apt-repository ppa:git-core/ppa
+      - apt-get update
+      - apt-get install -y git-lfs
+      - git lfs install
+
       - infrastructure/codebuild/setup_github_access.sh
       #- infrastructure/codebuild/get_ssh_key.sh
 
