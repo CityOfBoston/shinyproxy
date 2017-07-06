@@ -41,7 +41,7 @@ sudo /tmp/login_ecr.sh
 for image in $(echo ${ecr_repositories} | sed "s/,/ /g")
 do
     docker pull "$image"
-    echo -e "successfully pulled $image at $${date}" >> /home/ubuntu/pulled_docker_images.history
+    echo -e "successfully pulled $image at $$(date)" >> /home/ubuntu/pulled_docker_images.history
 
 done
 EOF
