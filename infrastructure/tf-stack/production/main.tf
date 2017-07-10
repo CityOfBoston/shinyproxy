@@ -83,12 +83,6 @@ data "aws_ami" "ubuntu_ami" {
 
 }
 
-//resource "aws_s3_bucket" "tmp" {
-//  bucket = "test-shiny-proxy"
-//  acl = "private"
-//}
-
-
 
 terraform {
   required_version = "v0.9.6"
