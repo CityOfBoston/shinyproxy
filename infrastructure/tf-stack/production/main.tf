@@ -23,7 +23,7 @@ module "shiny_proxy_stack" {
 
 
 terraform {
-  required_version = "v0.9.3"
+  required_version = "v0.9.6"
   backend "s3" {
     bucket = "boston-analytics-terraform-state"
     key = "prod-shiny-proxy"
