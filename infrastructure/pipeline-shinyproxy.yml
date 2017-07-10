@@ -16,11 +16,11 @@ Parameters:
     Description: The Git branch to be used
   TerraformVersion:
     Type: String
-    Default: 0.9.3
+    Default: 0.9.11
     Description: The Terraform version to use
   TerraformSha256:
     Type: String
-    Default: f34b96f7b7edaf8c4dc65f6164ba0b8f21195f5cbe5b7288ad994aa9794bb607
+    Default: 804d31cfa5fee5c2b1bff7816b64f0e26b1d766ac347c67091adccc2626e16f3
     Description: HASHICORP - Y U NO PACKAGE REPOSITORY
   DeploymentEnvironment:
     Type: String 
