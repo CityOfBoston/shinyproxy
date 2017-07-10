@@ -1,51 +1,102 @@
-variable "aws_region" {
-  default = "us-west-2"
-}
 
-variable "ssh_key" {
-  description = "location of ssh key for instance"
-  default = "~/.ssh/shinyproxy.pem"
-}
-
-variable "ssh_key_name" {
-  description = "Name of the AWS Keypair"
-  default = "shinyproxy"
-}
-
-variable "shiny_proxy_config_file" {
-  default ="../../../application.yml"
-}
-
-module "shiny_proxy_stack" {
-  source = "../../terraform"
-  azs = "us-west-2b"
-  environment = "development"
-  ssh_key = "${var.ssh_key}"
-  ssh_key_name = "${var.ssh_key_name}"
-  aws_region = "${var.aws_region}"
-  shiny_proxy_config_file = "${var.shiny_proxy_config_file}"
-  shinyproxy_eip = "${var.shinyproxy_eip}"
-  aws_instance_type = "m4.large"
-}
-
-variable "shinyproxy_eip" {
-  default = "35.164.125.172"
-}
 
 provider "aws" {
   region = "${var.aws_region}"
 }
 
+variable "aws_region" {
+  type = "string"
+  default = "us-west-2"
+}
+
+
+
+variable "shiny_app_docker_images" {
+  type = "string"
+  description = "A comma seperated string of docker images to download onto the server "
+  default = "811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times,811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston"
+}
+
+variable "public_application_file" {
+  type = "string"
+  description = "The shiny proxy application file that contains applications that are to be publically available"
+  default = "../../../public_application.yml"
+}
+
+variable "private_application_file" {
+  type = "string"
+  description = "The shiny proxy application file that contains applications that are to be private"
+  default = "../../../application.yml"
+}
+
+variable "instance_type" {
+  type = "string"
+  description = "The type of ec2 instance to use in autoscaling groups"
+  default = "m4.large"
+}
+
+
+module "shiny_proxy" {
+  source = "../../terraform/shiny_proxy"
+  environment = "development"
+  aws_region = "${var.aws_region}"
+  ubuntu_ami_id = "${data.aws_ami.ubuntu_ami.id}"
+  vpc_id = "vpc-ebaf588d"
+  key_name = "shinyproxy"
+  azs = ["us-west-2b", "us-west-2a", "us-west-2c"]
+
+  shiny_app_ecr = "${var.shiny_app_docker_images}"
+  public_application_file = "${var.public_application_file}"
+  private_application_file = "${var.private_application_file}"
+  autoscaling_max_size = 2
+  app_bucket = "${aws_s3_bucket.tmp.bucket}"
+  instance_type = "${var.instance_type}"
+  load_balancer_timeout = 7200
+  update_image_frequency = "*/10 * * * *"
+}
+
+
+
+
+
+data "aws_ami" "ubuntu_ami" {
+  most_recent      = true
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name = "architecture"
+    values = ["x86_64"]
+  }
+  filter {
+    name = "name"
+    values = ["*hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+  }
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"]
+
+
+}
+
+resource "aws_s3_bucket" "tmp" {
+  bucket = "test-shiny-proxy"
+  acl = "private"
+}
+
+
+
 terraform {
-  required_version = "v0.9.3"
+  required_version = "v0.9.6"
   backend "s3" {
-    bucket = "dev-boston-analytics-terraform-state"
-    key = "dev-shiny-proxy"
-    region = "us-west-2"
+    bucket = "city-of-boston"
+    key = "deployments/terraform/shinyproxy/development.tfstate"
+    region = "us-east-1"
     encrypt = "true"
   }
 }
 
-output "shiny_proxy_ip" {
-  value = "${module.shiny_proxy_stack.shiny_proxy_ip}"
-}
