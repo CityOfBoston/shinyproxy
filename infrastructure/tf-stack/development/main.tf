@@ -91,7 +91,7 @@ resource "aws_s3_bucket" "tmp" {
 
 
 terraform {
-  required_version = "v0.9.6"
+  required_version = "v0.9.11"
   backend "s3" {
     bucket = "city-of-boston"
     key = "deployments/terraform/shinyproxy/development.tfstate"
