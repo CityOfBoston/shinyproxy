@@ -1,11 +1,11 @@
 
 resource "aws_iam_instance_profile" "shiny_profile" {
-  name = "shiny-profile"
+  name = "${var.environment}-shiny-profile"
   role = "${aws_iam_role.shiny-proxy-role.name}"
 }
 
 resource "aws_iam_role" "shiny-proxy-role" {
-  name = "shiny_proxy_role"
+  name = "${var.environment}-shiny_proxy_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

@@ -4,6 +4,8 @@ provider "aws" {
 
 
 
+
+
 resource "aws_s3_bucket_object" "public_application_yml" {
 
   bucket = "${var.app_bucket}"
@@ -19,7 +21,6 @@ resource "aws_s3_bucket_object" "private_application_yml" {
   bucket = "${var.app_bucket}"
   key = "/apps/${var.environment}/shinyproxy/private_application.yml"
   source = "${var.private_application_file}"
-
   server_side_encryption = "AES256"
 }
 
