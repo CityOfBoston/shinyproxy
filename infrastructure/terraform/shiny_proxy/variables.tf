@@ -6,32 +6,11 @@ variable "environment" {
 
 }
 
-variable "vpc_id" {
-
-}
-
 variable "instance_type" {
-  default = "m4.large"
 }
 
-variable "private_subnets" {
-default = []
-}
-
-variable "public_subnets" {
-default = []
-}
-
-variable "ssh_key" {
-
-}
 
 variable "ubuntu_ami_id" {
-
-}
-
-
-variable "shinyproxy_eip" {
 
 }
 
@@ -40,7 +19,42 @@ variable "key_name" {
 
 }
 
+variable "vpc_id" {
+  type = "string"
 
-variable "shiny_proxy_config_file" {
+}
 
+
+variable "load_balancer_timeout" {
+  description = "The length of time that you would like idle connections to last o"
+}
+
+variable "public_application_file" {
+
+}
+
+variable "private_application_file" {
+
+}
+
+variable "shiny_app_ecr" {
+  type = "string"
+  description = "Shiny App Docker Images to pull from ECR Repository"
+}
+
+variable "azs" {
+  type = "list"
+  description = "list of availablity zones"
+}
+
+
+variable "update_image_frequency" {
+
+}
+
+variable "autoscaling_max_size" {
+  description = "the max number of instances in this auto scaling group"
+}
+variable "app_bucket" {
+  default = "test-shiny-proxy"
 }

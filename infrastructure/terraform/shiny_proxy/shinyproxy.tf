@@ -2,122 +2,163 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
-resource "aws_eip_association" "shinyproxy_eip_assoc" {
-  instance_id = "${aws_instance.shinyproxy.id}"
-  public_ip = "${var.shinyproxy_eip}"
+
+
+
+
+resource "aws_s3_bucket_object" "public_application_yml" {
+
+  bucket = "${var.app_bucket}"
+  key = "/apps/${var.environment}/shinyproxy/public_application.yml"
+  source = "${var.public_application_file}"
+  server_side_encryption = "AES256"
 }
 
-resource "aws_instance" "shinyproxy" {
-  key_name = "${var.key_name}"
+
+
+resource "aws_s3_bucket_object" "private_application_yml" {
+
+  bucket = "${var.app_bucket}"
+  key = "/apps/${var.environment}/shinyproxy/private_application.yml"
+  source = "${var.private_application_file}"
+  server_side_encryption = "AES256"
+}
+
+data "template_file" "public_user_data" {
+  template = "${file("${path.module}/bin/user_data.sh")}"
+  vars {
+    DOCKER_VERSION="17.06.0~ce-0~ubuntu"
+    ecr_repositories = "${var.shiny_app_ecr}"
+    SHINY_PROXY_VERSION = "0.9.3"
+    BUCKET_NAME = "${var.app_bucket}"
+    SHINY_APP_CONFIG_FILE = "${aws_s3_bucket_object.public_application_yml.id}"
+    AWS_REGION = "${var.aws_region}"
+    update_image_frequency = "${var.update_image_frequency}"
+  }
+
+}
+
+
+
+data "template_file" "private_user_data" {
+  template = "${file("${path.module}/bin/user_data.sh")}"
+  vars {
+    DOCKER_VERSION="17.06.0~ce-0~ubuntu"
+    ecr_repositories = "${var.shiny_app_ecr}"
+    SHINY_PROXY_VERSION = "0.9.3"
+    BUCKET_NAME = "${var.app_bucket}"
+    SHINY_APP_CONFIG_FILE = "${aws_s3_bucket_object.private_application_yml.id}"
+    AWS_REGION = "${var.aws_region}"
+    update_image_frequency = "${var.update_image_frequency}"
+  }
+
+}
+
+resource "aws_launch_configuration" "public_shiny_lc" {
+  name_prefix = "public-shiny-server-"
+  image_id = "${var.ubuntu_ami_id}"
   instance_type = "${var.instance_type}"
-  ami = "${var.ubuntu_ami_id}"
-  vpc_security_group_ids = ["${aws_default_security_group.default.id}","${aws_security_group.shinyproxy.id}"]
-  subnet_id = "${element(var.public_subnets, 1)}"
-  tags {
-    Name = "shinyproxyserver"
-    Environment = "${var.environment}"
-  }
-  associate_public_ip_address = true
-  monitoring = true
-  root_block_device {
-    volume_size = 100
-  }
-  provisioner "file" {
-    source = "${path.module}/bin/"
-    destination = "/tmp/"
-    connection {
-      user = "ubuntu"
-      type = "ssh"
-      host = "${self.public_ip}"
-      timeout = "5m"
-      private_key = "${file(var.ssh_key)}"
-    }
-  }
+  security_groups = ["${aws_security_group.shinyproxy.id}"]
+  iam_instance_profile = "${aws_iam_instance_profile.shiny_profile.id}"
+  key_name = "${var.key_name}"
 
-  provisioner "remote-exec" {
-    inline = [
-      "mkdir -p ~/shinyproxy/bin",
-      "mv /tmp/install_shiny_proxy.sh ~/shinyproxy/bin",
-      "chmod u+x ~/shinyproxy/bin/install_shiny_proxy.sh",
-      "./shinyproxy/bin/install_shiny_proxy.sh"
-    ]
-    connection {
-      user = "ubuntu"
-      type = "ssh"
-      host = "${self.public_ip}"
-      timeout = "5m"
-      private_key = "${file(var.ssh_key)}"
-    }
-  }
-  provisioner "file" {
-    source = "${var.shiny_proxy_config_file}"
-    destination = "~/shinyproxy/application.yml"
-    connection {
-      user = "ubuntu"
-      type = "ssh"
-      host = "${self.public_ip}"
-      timeout = "5m"
-      private_key = "${file(var.ssh_key)}"
-    }
+  user_data = "${data.template_file.public_user_data.rendered}"
+
+  lifecycle {
+    create_before_destroy = true
   }
 
 }
 
 
 
-data "aws_vpc" "aws_vpc" {
-  id = "${var.vpc_id}"
-}
 
+resource "aws_launch_configuration" "private_shiny_lc" {
+  name_prefix = "private-shiny-server-"
+  image_id = "${var.ubuntu_ami_id}"
+  instance_type = "${var.instance_type}"
+  security_groups = ["${aws_security_group.shinyproxy.id}"]
+  iam_instance_profile = "${aws_iam_instance_profile.shiny_profile.id}"
+  key_name = "${var.key_name}"
 
-resource "aws_default_security_group" "default" {
-  vpc_id = "${var.vpc_id}"
+  user_data = "${data.template_file.private_user_data.rendered}"
 
-  ingress {
-    protocol  = -1
-    self      = true
-    from_port = 0
-    to_port   = 0
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-
-resource "aws_security_group" "shinyproxy" {
-  vpc_id = "${var.vpc_id}"
-  #Allows access from the web to this instance
-  ingress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
-    self = true
-  }
-
-  egress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # SSH access
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  lifecycle {
+    create_before_destroy = true
   }
 
 }
 
-output "shiny_proxy_public_ip" {
-  value = "${aws_instance.shinyproxy.public_ip}"
+resource "aws_autoscaling_group" "private_shiny_asg" {
+  vpc_zone_identifier = ["${data.aws_subnet.private.*.id}"]
+  launch_configuration = "${aws_launch_configuration.private_shiny_lc.name}"
+  desired_capacity = 1
+  max_size = "${var.autoscaling_max_size}"
+  min_size = 1
+  health_check_type = "EC2"
+  health_check_grace_period = "60"
+  wait_for_capacity_timeout = 0
+
+  target_group_arns = ["${aws_alb_target_group.private_shiny_tg.id}"]
+  enabled_metrics = [
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupDesiredCapacity",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+    "GroupTotalInstances",
+  ]
+  depends_on = ["aws_alb.frontend"]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tag {
+    key = "Name"
+    value = "private-shiny-server-ag-${aws_launch_configuration.private_shiny_lc.count}"
+    propagate_at_launch = true
+  }
 }
+
+
+
+
+
+resource "aws_autoscaling_group" "public_shiny_asg" {
+  vpc_zone_identifier = ["${data.aws_subnet.private.*.id}"]
+  launch_configuration = "${aws_launch_configuration.public_shiny_lc.name}"
+  desired_capacity = 1
+  max_size = "${var.autoscaling_max_size}"
+  min_size = 1
+  health_check_type = "EC2"
+  health_check_grace_period = "60"
+  wait_for_capacity_timeout = 0
+
+  target_group_arns = ["${aws_alb_target_group.public_shiny_tg.id}"]
+  enabled_metrics = [
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupDesiredCapacity",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+    "GroupTotalInstances",
+  ]
+  depends_on = ["aws_alb.frontend"]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tag {
+    key = "Name"
+    value = "public-shiny-server-ag-${aws_launch_configuration.public_shiny_lc.count}"
+    propagate_at_launch = true
+  }
+}
+
+

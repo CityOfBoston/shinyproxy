@@ -1,0 +1,120 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Serverless deployment pipeline for Shiny Applications
+Parameters:
+  GithubOauthToken:
+    Type: String
+    Description: see http://docs.aws.amazon.com/codepipeline/latest/userguide/integrations-action-type.html for instructions
+  GithubRepoOwner:
+    Type: String
+    Description: The Github owner of the repository
+  GithubRepoName:
+    Type: String
+    Description: The GitHub repository where the Terraform files (to be executed) are located
+  GithubRepoBranch:
+    Type: String
+    Default: master
+    Description: The Git branch to be used
+  TerraformVersion:
+    Type: String
+    Default: 0.9.3
+    Description: The Terraform version to use
+  TerraformSha256:
+    Type: String
+    Default: f34b96f7b7edaf8c4dc65f6164ba0b8f21195f5cbe5b7288ad994aa9794bb607
+    Description: HASHICORP - Y U NO PACKAGE REPOSITORY
+  DeploymentEnvironment:
+    Type: String 
+    Default: development
+    AllowedValues: ["development", "production"]
+    Description: The environment to deploy this application to. Please choose either (development or production)
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Source Code Repository
+        Parameters:
+          - GithubRepoOwner
+          - GithubRepoName
+          - GithubRepoBranch
+          - GithubOauthToken
+      - Label:
+          default: Terraform
+        Parameters:
+          - TerraformVersion
+          - TerraformSha256
+      - Label:
+          default: Deployment Environment
+        Parameters:
+          - DeploymentEnvironment
+
+Resources:
+  ArtifactStoreBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      AccessControl: BucketOwnerFullControl
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn: arn:aws:iam::811289587868:role/codepipeline-role
+      ArtifactStore:
+        Location:
+          Ref:
+            ArtifactStoreBucket
+        Type: S3
+      Stages:
+        - Name: Source
+          Actions:
+            - InputArtifacts: []
+              Name: ShinyProxy
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: 1
+                Provider: GitHub
+              OutputArtifacts:
+                - Name: ShinyProxy
+              Configuration:
+                Owner: !Ref GithubRepoOwner
+                Repo: !Ref GithubRepoName
+                Branch: !Ref GithubRepoBranch
+                OAuthToken: !Ref GithubOauthToken
+              RunOrder: 1
+              
+        - Name: DeployShinyProxy
+          Actions:
+          - Name: DeployShinyProxyAction
+            ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+            OutputArtifacts:
+              - Name: DeployShinyProxyOutput
+            InputArtifacts:
+              - Name: ShinyProxy
+            Configuration:
+                ProjectName: !Ref DeployShinyProxyBuild
+            RunOrder: 1
+
+  DeployShinyProxyBuild:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/docker:1.12.1
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: DeploymentEnvironment
+            Value: !Sub ${DeploymentEnvironment}
+          - Name: TerraformSha256
+            Value: !Sub ${TerraformSha256}
+          - Name: TerraformVersion
+            Value: !Sub ${TerraformVersion}
+      Name: !Sub ${AWS::StackName}-InvokeTerraformBuild
+      ServiceRole: arn:aws:iam::811289587868:role/shinyapp-deploy-role
+      Source:
+        Type: CODEPIPELINE
