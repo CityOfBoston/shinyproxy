@@ -13,9 +13,6 @@ shiny:
     - name: bfd_analyst
       password: test_fires
       groups: scientists
-    - name: imagine-boston
-      password: boston2030rocks
-      groups: scientists
     - name: housing_analyst
       password: increase-seaward-hoard
       groups: housing
