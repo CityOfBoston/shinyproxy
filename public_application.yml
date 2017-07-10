@@ -18,7 +18,7 @@ shiny:
     display-name: Imagine Boston 2030
     description: Metrics related to the Imagine Boston 2030 Action Plan
     docker-cmd: ["R", "-e shiny::runApp('/root/imagine_boston')"]
-    docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston
+    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/imagine_boston
 
 
 logging:
