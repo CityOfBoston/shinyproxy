@@ -1,7 +1,7 @@
 data "aws_instance" "bastion" {
   filter {
     name = "tag:Name"
-    values = ["bastion"]
+    values = ["${var.environment}-bastion"]
   }
 }
 
@@ -9,12 +9,12 @@ data "aws_instance" "bastion" {
 data  "aws_security_group" "bastion_sg" {
   filter {
     name = "tag:Name"
-    values = ["bastion"]
+    values = ["${var.environment}-bastion"]
   }
 }
 
 data "aws_vpc" "vpc" {
-  id = "vpc-ebaf588d"
+  id = "${var.vpc_id}"
 }
 
 
