@@ -41,7 +41,7 @@ module "shiny_proxy" {
   environment = "production"
   aws_region = "${var.aws_region}"
   ubuntu_ami_id = "${data.aws_ami.ubuntu_ami.id}"
-  vpc_id = "vpc-ebaf588d"
+  vpc_id = "vpc-20f04859"
   key_name = "shinyproxy"
   azs = ["us-east-1b", "us-east-1a", "us-east-1c"]
 
@@ -49,7 +49,7 @@ module "shiny_proxy" {
   public_application_file = "${var.public_application_file}"
   private_application_file = "${var.private_application_file}"
   autoscaling_max_size = 2
-  app_bucket = "${aws_s3_bucket.tmp.bucket}"
+  app_bucket = "city-of-boston"
   instance_type = "${var.instance_type}"
   load_balancer_timeout = 7200
   update_image_frequency = "*/10 * * * *"
@@ -83,10 +83,10 @@ data "aws_ami" "ubuntu_ami" {
 
 }
 
-resource "aws_s3_bucket" "tmp" {
-  bucket = "test-shiny-proxy"
-  acl = "private"
-}
+//resource "aws_s3_bucket" "tmp" {
+//  bucket = "test-shiny-proxy"
+//  acl = "private"
+//}
 
 
 

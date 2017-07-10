@@ -9,7 +9,7 @@ resource "aws_s3_bucket_object" "public_application_yml" {
   bucket = "${var.app_bucket}"
   key = "/apps/${var.environment}/shinyproxy/public_application.yml"
   source = "${var.public_application_file}"
-  etag = "${md5(var.public_application_file)}"
+  server_side_encryption = "AES256"
 }
 
 
@@ -19,7 +19,8 @@ resource "aws_s3_bucket_object" "private_application_yml" {
   bucket = "${var.app_bucket}"
   key = "/apps/${var.environment}/shinyproxy/private_application.yml"
   source = "${var.private_application_file}"
-  etag = "${md5(file(var.private_application_file))}"
+
+  server_side_encryption = "AES256"
 }
 
 data "template_file" "public_user_data" {
