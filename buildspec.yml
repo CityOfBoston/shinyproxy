@@ -3,8 +3,6 @@ phases:
   install:
     commands:
       - apt-get -y update && apt-get -y upgrade
-      #- apt-get -y install ssh
-      #- apt-get -y install openssh-client
       - apt-get -y install jq
       - apt-get -y install software-properties-common
       - add-apt-repository -y ppa:jonathonf/python-3.6
@@ -17,13 +15,6 @@ phases:
       - pip3 install awscli
       - chmod u+x infrastructure/codebuild/*
       - infrastructure/codebuild/install_terraform.sh
-      - apt-get install -y software-properties-common
-      - add-apt-repository ppa:git-core/ppa
-      - apt-get update
-      - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-      - apt-get install -y git-lfs
-      - git lfs install
-
       - infrastructure/codebuild/setup_github_access.sh
 
 
