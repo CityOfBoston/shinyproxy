@@ -15,7 +15,7 @@ phases:
       - pip3 install awscli
       - chmod u+x infrastructure/codebuild/*
       - infrastructure/codebuild/install_terraform.sh
-      - infrastructure/codebuild/setup_github_access.sh
+      
 
 
 
