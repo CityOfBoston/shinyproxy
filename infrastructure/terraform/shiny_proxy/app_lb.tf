@@ -43,6 +43,7 @@ resource "aws_alb_listener" "private_shiny_listener" {
 
 
 resource  "aws_alb_target_group" "private_shiny_tg" {
+  name = "private-shiny-tg"
   port = 8080
   protocol = "HTTP"
   vpc_id = "${var.vpc_id}"
@@ -58,7 +59,7 @@ resource  "aws_alb_target_group" "private_shiny_tg" {
     unhealthy_threshold = 2
     timeout = 3
     protocol = "HTTP"
-    path = "/private/login"
+    path = "/login"
     interval  = 30
   }
 
@@ -68,6 +69,7 @@ resource  "aws_alb_target_group" "private_shiny_tg" {
 
 
 resource  "aws_alb_target_group" "public_shiny_tg" {
+  name = "public-shiny-tg"
   port = 8080
   protocol = "HTTP"
   vpc_id = "${var.vpc_id}"
