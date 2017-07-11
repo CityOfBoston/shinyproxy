@@ -58,3 +58,4 @@ variable "autoscaling_max_size" {
 variable "app_bucket" {
   default = "test-shiny-proxy"
 }
+
