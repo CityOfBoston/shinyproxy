@@ -44,6 +44,7 @@ do
     echo -e "successfully pulled $image at $$(date)" >> /home/ubuntu/pulled_docker_images.history
 
 done
+cd /home/ubuntu/shinyproxy
 nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 EOF
 
@@ -136,7 +137,7 @@ chown ubuntu /home/ubuntu/pull_images.sh
 
 # Add pulling images to cron
 
-if [ ${environment} -eq "development" ]; then
+if [ "${environment}" = "development" ]; then
     if [ -n "${update_image_frequency}" ]; then
         croncmd="/home/ubuntu/pull_images.sh"
         cronjob="${update_image_frequency} $${croncmd}"

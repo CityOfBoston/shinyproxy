@@ -20,13 +20,13 @@ variable "shiny_app_docker_images" {
 variable "public_application_file" {
   type = "string"
   description = "The shiny proxy application file that contains applications that are to be publically available"
-  default = "../../../public_application.yml"
+  default = "../../../config/development/public_application.yml"
 }
 
 variable "private_application_file" {
   type = "string"
   description = "The shiny proxy application file that contains applications that are to be private"
-  default = "../../../application.yml"
+  default = "../../../config/development/application.yml"
 }
 
 variable "instance_type" {
@@ -34,6 +34,7 @@ variable "instance_type" {
   description = "The type of ec2 instance to use in autoscaling groups"
   default = "m4.large"
 }
+
 
 
 module "shiny_proxy" {
@@ -91,7 +92,7 @@ resource "aws_s3_bucket" "tmp" {
 
 
 terraform {
-  required_version = "v0.9.6"
+  required_version = "v0.9.11"
   backend "s3" {
     bucket = "city-of-boston"
     key = "deployments/terraform/shinyproxy/development.tfstate"
