@@ -37,7 +37,7 @@ but its better to be safe.
  * Also I have set up another CI pipeline tracking the deployed shiny app, so that any changes committed to the master branch 
  of the shiny app repo get propagated to the deployed application via this pipeline:
  
-    https://github.com/CityOfBoston/cloudformation-templates/blob/master/codepipeline/pipeline-shiny-app.yml
+    [CloudFormation Template](infrastructure/pipeline-shinyproxy.yml)
     
     
  ## Troubleshooting 
