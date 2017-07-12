@@ -31,12 +31,9 @@ but its better to be safe.
 
 ## Continuous Integration
  This repository has been set up to be apart of a continuous integration pipeline defined here:
- https://github.com/CityOfBoston/cloudformation-templates/blob/master/codepipeline/pipeline-shinyproxy.yml
- 
  * This means that any changes committed to the master branch on GitHub will be automatically deployed 
- * Also I have set up another CI pipeline tracking the deployed shiny app, so that any changes committed to the master branch 
- of the shiny app repo get propagated to the deployed application via this pipeline:
- 
+ * Also I have set up another CI pipeline tracking each shiny app repository
+    * Committing to the master branch of the shiny app repository will set off a docker build process that will build a new image and upload it to the amazon container repository
     [CloudFormation Template](infrastructure/pipeline-shinyproxy.yml)
     
     
