@@ -15,7 +15,7 @@ provision AWS resources based off the source code in the `infrastructure/` folde
 ### terraform 
 * The terraform folder defines the AWS resources needed to run the Shiny Proxy application 
 * At a high level the deployed infrastructure is represented in the folowing graph
-![Shiny Server](../infrastructure/diagrams/shinyserver-arch.png)
+![Shiny Server](infrastructure/diagrams/shinyserver-arch.png)
 
 
 ### codebuild 
