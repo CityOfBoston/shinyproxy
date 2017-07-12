@@ -116,7 +116,7 @@ resource  "aws_alb_target_group" "public_shiny_tg" {
     unhealthy_threshold = 2
     timeout = 3
     protocol = "HTTP"
-    path = "/public"
+    path = "/"
     interval  = 30
   }
 
