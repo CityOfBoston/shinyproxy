@@ -53,6 +53,7 @@ module "shiny_proxy" {
   instance_type = "${var.instance_type}"
   load_balancer_timeout = 7200
   update_image_frequency = "*/10 * * * *"
+  certficate_arn = "arn:aws:acm:us-east-1:811289587868:certificate/364be4c7-7972-4820-97f7-a820c57389fb"
 }
 
 
