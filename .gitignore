@@ -10,6 +10,7 @@
 .idea/
 infrastructure/tf-stack/development/terraform.tfstate.*.backup
 
-
+*.key
+*.csr
 .DS_Store
 !/infrastructure/terraform/shiny_proxy/app_lb.tf
