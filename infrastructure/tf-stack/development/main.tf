@@ -55,6 +55,7 @@ module "shiny_proxy" {
   load_balancer_timeout = 7200
   update_image_frequency = "*/10 * * * *"
   certficate_arn = "arn:aws:acm:us-west-2:811289587868:certificate/3079077b-d5d5-46bc-a116-5f855c361d35"
+  use_secure_load_balancer = false
 }
 
 
