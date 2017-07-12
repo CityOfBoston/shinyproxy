@@ -26,20 +26,20 @@ shiny:
     display-name: Boston Fire Department Dashboard
     description: Boston Fire Department Dashboard
     docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
-    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/bfd_response_times
+    docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/bfd_response_times
     groups: scientists
 
   - name: imagine-boston
     display-name: Imagine Boston 2030
     description: Metrics related to the Imagine Boston 2030 Action Plan
     docker-cmd: ["R", "-e shiny::runApp('/root/imagine_boston')"]
-    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/imagine_boston
+    docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/imagine_boston
 
   - name: eviction-analysis
     display-name: Eviction Analysis
     description: Shows number of evictions per block group in Boston for 2016
     docker-cmd: ["R", "-e shiny::runApp('/root/evictions')"]
-    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis
+    docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/eviction_analysis
     groups: housing
 
 logging:

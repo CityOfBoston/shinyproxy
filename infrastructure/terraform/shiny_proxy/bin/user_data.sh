@@ -44,6 +44,10 @@ do
     echo -e "successfully pulled $image at $$(date)" >> /home/ubuntu/pulled_docker_images.history
 
 done
+
+cd /home/ubuntu/shinyproxy
+nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
+
 EOF
 
 cat <<"EOF" > /tmp/bootstrap_shiny.sh
@@ -121,7 +125,7 @@ do
 
 done
 
-echo "java -jar shinyproxy-${SHINY_PROXY_VERSION}.jar --server.session.timeout=300" > /tmp/start_proxy.sh
+echo "(jps -ml | grep shinyproxy | grep -P -o \"\\d+\\s\" | awk \"{print $1}\" | xargs kill) || echo \"nothing currently running\"; java -jar shinyproxy-${SHINY_PROXY_VERSION}.jar" > /tmp/start_proxy.sh
 chmod u+x /tmp/start_proxy.sh
 nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 EOF
@@ -133,8 +137,10 @@ chown ubuntu /home/ubuntu/pull_images.sh
 
 # Add pulling images to cron
 
-if [ -n "${update_image_frequency}" ]; then
-    croncmd="/home/ubuntu/pull_images.sh"
-    cronjob="${update_image_frequency} $${croncmd}"
-    ( crontab -u ubuntu -l | grep -v "$${croncmd}"; echo "$${cronjob}" ) | crontab -u ubuntu -
+if [ "${environment}" = "development" ]; then
+    if [ -n "${update_image_frequency}" ]; then
+        croncmd="/home/ubuntu/pull_images.sh"
+        cronjob="${update_image_frequency} $${croncmd}"
+        ( crontab -u ubuntu -l | grep -v "$${croncmd}"; echo "$${cronjob}" ) | crontab -u ubuntu -
+    fi
 fi
