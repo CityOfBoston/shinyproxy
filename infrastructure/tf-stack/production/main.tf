@@ -83,7 +83,6 @@ data "aws_ami" "ubuntu_ami" {
 
 }
 
-
 terraform {
   required_version = "v0.9.11"
   backend "s3" {

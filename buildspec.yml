@@ -18,7 +18,6 @@ phases:
 
 
 
-
   build:
     commands:
         - infrastructure/codebuild/setup_terraform_aws_credentials.sh
