@@ -70,3 +70,8 @@ variable "autoscaling_max_size" {
 variable "app_bucket" {
   default = "test-shiny-proxy"
 }
+
+variable "use_secure_load_balancer" {
+  default = false
+  description = "We dont have a ssl cert for our development environment so we need the ablity to create a lb without https"
+}
