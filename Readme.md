@@ -28,18 +28,24 @@ provision AWS resources based off the source code in the `infrastructure/` folde
 * This may not be necessary since I have specified that the state be tracked in a remote s3 bucket, 
 but its better to be safe. 
 
-
+## config 
+* this folder contains the configuration files that determine which shiny applications are available on each server
+    * `public_application.yml` defines the shiny apps that will be available on the public shiny server 
+    * `application.yml` defines the shiny apps that will be available on the private shiny server 
 ## Continuous Integration
  This repository has been set up to be apart of a continuous integration pipeline defined here:
+    [CloudFormation Template](infrastructure/pipeline-shinyproxy.yml)
+    
  * This means that any changes committed to the master branch on GitHub will be automatically deployed 
  * Also I have set up another CI pipeline tracking each shiny app repository
     * Committing to the master branch of the shiny app repository will set off a docker build process that will build a new image and upload it to the amazon container repository
-    [CloudFormation Template](infrastructure/pipeline-shinyproxy.yml)
     
     
  ## Troubleshooting 
  * ssh into the bastion host with the ssh forwarding agent flag on: `ssh -A -i ~/.ssh/shinyserver.pem ec2-user@34.207.13.110`
+     * the ssh key can be found under the `city-of-boston/secrets/` folder 
  * ssh into either the public or private shiny server: `ssh ubuntu@<shiny-server-private-ip>`
+     * the private ip's can be found in the aws console 
  * shiny server logs can be viewed: `tail -f shinyproxy/shinyproxy.out` or `cat shinyproxy/shinyproxy.out`
  * shiny server can be killed and restarted: `cd shinyproxy && /tmp/start_proxy.sh`
  * You can also kill the instance on the aws console and new instance will be brought up with the same configuration automatically 
