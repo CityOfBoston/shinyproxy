@@ -55,6 +55,10 @@ variable "azs" {
   description = "list of availablity zones"
 }
 
+variable "certficate_arn" {
+  description = "The ssl certificate that the ALB should use"
+  default = "arn:aws:acm:us-west-2:811289587868:certificate/3079077b-d5d5-46bc-a116-5f855c361d35"
+}
 
 variable "update_image_frequency" {
   description = "The frequency for the cron job to pull new images and restart the server"
