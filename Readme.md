@@ -47,8 +47,8 @@ but its better to be safe.
  * shiny server can be killed and restarted: `cd shinyproxy && /tmp/start_proxy.sh`
  * You can also kill the instance on the aws console and new instance will be brought up with the same configuration automatically 
  * If you are having a problem with a specific shiny app I would try to run it locally using the following for example:
-     * docker pull 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis
-     * docker run -p 3838:3838 -it 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis
+     * `docker pull 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis`
+     * `docker run -p 3838:3838 -it 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis`
      * This will initialize a local version of the shiny app and you should be able to figure out any issues that pop up in the terminal log 
      
  
