@@ -40,12 +40,13 @@ echo -e  $$(aws ecr get-login --region=${AWS_REGION} --no-include-email) > /tmp/
 sudo /tmp/login_ecr.sh
 for image in $(echo ${ecr_repositories} | sed "s/,/ /g")
 do
-    docker pull "$image"
+    sudo docker pull "$image"
     echo -e "successfully pulled $image at $$(date)" >> /home/ubuntu/pulled_docker_images.history
 
 done
 
 cd /home/ubuntu/shinyproxy
+echo -e "restarting shiny server on $$(date)" >> /home/ubuntu/pulled_docker_images.history
 nohup /tmp/start_proxy.sh  >shinyproxy.out 2>&1 &
 
 EOF
