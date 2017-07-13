@@ -21,7 +21,7 @@ phases:
   build:
     commands:
         - infrastructure/codebuild/setup_terraform_aws_credentials.sh
-        - python3.6 infrastructure/codebuild/parse_docker_images.py public_application.yml application.yml
+        - python3.6 infrastructure/codebuild/parse_docker_images.py config/${DeploymentEnvironment}/public_application.yml config/${DeploymentEnvironment}/application.yml
         - infrastructure/codebuild/deploy_infra.sh
 
 
