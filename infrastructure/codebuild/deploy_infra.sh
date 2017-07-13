@@ -16,8 +16,8 @@ terraform init && terraform get && \
 (terraform taint -module=shiny_proxy aws_s3_bucket_object.private_application_yml || echo "no private application_file exists so just continue") && \
 terraform apply \
     -var "ssh_key_name=${SSH_KEYNAME}" \
-    -var "public_application_file=${ROOT}/${PUBLIC_SHINY_PROXY_CONFIG_FILE}" \
-    -var "private_application_file=${ROOT}/${PRIVATE_SHINY_PROXY_CONFIG_FILE}" \
+    -var "public_application_file=${ROOT}/config/${DeploymentEnvironment}/${PUBLIC_SHINY_PROXY_CONFIG_FILE}" \
+    -var "private_application_file=${ROOT}/config/${DeploymentEnvironment}/${PRIVATE_SHINY_PROXY_CONFIG_FILE}" \
     -var "shiny_app_docker_images=${PUBLIC_IMAGES},${PRIVATE_IMAGES}"
 
 echo "Successfully deployed application. I probably should start testing it"
