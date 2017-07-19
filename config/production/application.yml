@@ -41,6 +41,12 @@ shiny:
     docker-cmd: ["R", "-e shiny::runApp('/root/evictions')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis
     groups: housing
+    
+  - name: p3-bb-monitoring
+    display-name: P3 Back Bay monitoring
+    description: Monitors data collection in the Back Bay
+    docker-cmd: ["R", "-e shiny::runApp('/root/p3_bb_monitoring')"]
+    docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/p3-bb-monitoring
 
 logging:
   file:
