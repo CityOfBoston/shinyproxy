@@ -93,6 +93,7 @@ resource "aws_launch_configuration" "private_shiny_lc" {
 }
 
 resource "aws_autoscaling_group" "private_shiny_asg" {
+  name = "private-shiny-asg-${aws_launch_configuration.private_shiny_lc.name}"
   vpc_zone_identifier = ["${data.aws_subnet.private.*.id}"]
   launch_configuration = "${aws_launch_configuration.private_shiny_lc.name}"
   desired_capacity = 1
@@ -131,6 +132,7 @@ resource "aws_autoscaling_group" "private_shiny_asg" {
 
 
 resource "aws_autoscaling_group" "public_shiny_asg" {
+  name = "public-shiny-asg-${aws_launch_configuration.private_shiny_lc.name}"
   vpc_zone_identifier = ["${data.aws_subnet.private.*.id}"]
   launch_configuration = "${aws_launch_configuration.public_shiny_lc.name}"
   desired_capacity = 1
