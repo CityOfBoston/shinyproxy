@@ -33,19 +33,6 @@ resource "aws_alb_listener" "secure_public_shiny_listener" {
 
 
 
-//resource "aws_alb_listener" "secure_private_shiny_listener" {
-//  count = "${var.use_secure_load_balancer}"
-//  load_balancer_arn = "${aws_alb.frontend.arn}"
-//  port = 3838
-//  protocol = "HTTPS"
-//  ssl_policy = "ELBSecurityPolicy-2015-05"
-//  certificate_arn = "${var.certficate_arn}"
-//  default_action {
-//    target_group_arn = "${aws_alb_target_group.private_shiny_tg.arn}"
-//    type = "forward"
-//  }
-//}
-
 
 resource "aws_alb_listener" "public_shiny_listener" {
   count = "${1 - var.use_secure_load_balancer}"
@@ -61,7 +48,6 @@ resource "aws_alb_listener" "public_shiny_listener" {
 
 
 resource "aws_alb_listener" "private_shiny_listener" {
-//  count = "${1 - var.use_secure_load_balancer}"
   load_balancer_arn = "${aws_alb.frontend.arn}"
   port = 3838
   protocol = "HTTP"
