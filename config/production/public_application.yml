@@ -20,6 +20,11 @@ shiny:
     docker-cmd: ["R", "-e shiny::runApp('/root/imagine_boston')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/imagine_boston
 
+  - name: p3-bb-monitoring
+    display-name: P3 Back Bay monitoring
+    description: Monitors data collection in the Back Bay
+    docker-cmd: ["R", "-e shiny::runApp('/root/p3_bb_monitoring')"]
+    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/p3-bb-monitoring
 
 logging:
   file:
