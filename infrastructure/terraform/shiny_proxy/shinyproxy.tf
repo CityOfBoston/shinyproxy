@@ -67,6 +67,11 @@ resource "aws_launch_configuration" "public_shiny_lc" {
 
   user_data = "${data.template_file.public_user_data.rendered}"
 
+  root_block_device {
+    volume_size = 50
+    delete_on_termination = false
+
+  }
   lifecycle {
     create_before_destroy = true
   }
@@ -85,6 +90,12 @@ resource "aws_launch_configuration" "private_shiny_lc" {
   key_name = "${var.key_name}"
 
   user_data = "${data.template_file.private_user_data.rendered}"
+
+  root_block_device {
+    volume_size = 50
+    delete_on_termination = false
+
+  }
 
   lifecycle {
     create_before_destroy = true
