@@ -27,12 +27,6 @@ shiny:
     docker-cmd: ["R", "-e shiny::runApp('/root/p3_bb_monitoring')"]
     docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/p3-bb-monitoring
 
-  - name: flask-text-nlp
-    display-name: Text NLP
-    description: Flask app for determining clusters from text
-    docker-cmd: ["bin/entrypoint.sh"]
-    docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/text-nlp-app
-
 
 
 logging:

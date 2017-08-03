@@ -41,6 +41,14 @@ shiny:
     docker-cmd: ["R", "-e shiny::runApp('/root/evictions')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis
     groups: housing
+
+  - name: premature-mortality-analysis
+    display-name: Premature Mortality Analysis
+    description: Analysis
+    docker-cmd: ["R", "-e shiny::runApp('/root/prematuremortality')"]
+    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/premature-mortality-analysis
+    groups: housing
+
     
   - name: p3-bb-monitoring
     display-name: P3 Back Bay monitoring
