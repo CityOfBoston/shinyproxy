@@ -10,6 +10,9 @@ shiny:
     admin-groups: scientists
     # Simple auth configuration
     users:
+    - name: shiny_analyst
+      password: cover.navy.wrestle
+      groups: analyst
     - name: bfd_analyst
       password: test_fires
       groups: scientists
@@ -27,7 +30,7 @@ shiny:
     description: Boston Fire Department Dashboard
     docker-cmd: ["R", "-e shiny::runApp('/root/bfd_dashboard')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/bfd_response_times
-    groups: scientists
+    groups: scientists, analyst
 
   - name: imagine-boston
     display-name: Imagine Boston 2030
@@ -40,14 +43,14 @@ shiny:
     description: Shows number of evictions per block group in Boston for 2016
     docker-cmd: ["R", "-e shiny::runApp('/root/evictions')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/eviction_analysis
-    groups: housing
+    groups: housing, analyst
 
   - name: premature-mortality-analysis
     display-name: Premature Mortality Analysis
     description: Analysis
     docker-cmd: ["R", "-e shiny::runApp('/root/prematuremortality')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/premature-mortality-analysis
-    groups: housing
+    groups: housing, analyst
 
     
   - name: p3-bb-monitoring
@@ -55,6 +58,7 @@ shiny:
     description: Monitors data collection in the Back Bay
     docker-cmd: ["R", "-e shiny::runApp('/root/p3_bb_monitoring')"]
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/p3-bb-monitoring
+    groups: analyst
 
 logging:
   file:
