@@ -1,7 +1,7 @@
 shiny:
   proxy:
     title: City of Boston Analytics Team
-    logo-url: https://www.boston.gov/crispus/images/b-light.svg
+    logo-url: http://officialheader.boston.gov/header.js
     landing-page: /
     heartbeat-rate: 10000
     heartbeat-timeout: 6000000
