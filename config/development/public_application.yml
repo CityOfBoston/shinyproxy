@@ -7,7 +7,6 @@ shiny:
     heartbeat-timeout: 6000000
     port: 8080
     authentication: none
-    hide-navbar: true
     docker:
       cert-path: /home/none
       url: http://localhost:2375
