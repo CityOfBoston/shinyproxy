@@ -52,6 +52,8 @@ shiny:
     docker-image: 811289587868.dkr.ecr.us-west-2.amazonaws.com/p3-bb-monitoring
     groups: analyst
 
+
+
 logging:
   file:
     shinyproxy.log

@@ -60,6 +60,14 @@ shiny:
     docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/p3-bb-monitoring
     groups: analyst
 
+  - name: d4d-crash-model
+    display-name: Data For Democracy Crash Model
+    description: Tools for visualizing crash model data
+    docker-cmd: ["R", "-e shiny::runApp('/root/crash_model')"]
+    docker-image: 811289587868.dkr.ecr.us-east-1.amazonaws.com/d4d_crash_model
+    groups: analyst
+
+
 logging:
   file:
     shinyproxy.log
